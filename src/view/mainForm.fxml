@@ -27,7 +27,7 @@
             <children>
             <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 10 10 10 10;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <TableView layoutX="8.0" layoutY="50.0" prefHeight="180.0" prefWidth="394.0">
+                  <TableView fx:id="productTable" layoutX="8.0" layoutY="50.0" prefHeight="180.0" prefWidth="394.0">
                     <columns>
                       <TableColumn fx:id="productID" prefWidth="76.0" text="Product ID" />
                       <TableColumn fx:id="productName" prefWidth="99.0" text="Product Name" />
@@ -47,7 +47,7 @@
                </children></Pane>
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 10 10 10 10;" GridPane.rowIndex="1">
                     <children>
-                        <TableView layoutX="8.0" layoutY="52.0" prefHeight="180.0" prefWidth="394.0">
+                        <TableView fx:id="partTable" layoutX="8.0" layoutY="52.0" prefHeight="180.0" prefWidth="394.0">
                             <columns>
                                 <TableColumn fx:id="partID" prefWidth="53.0" text="Part ID" />
                                 <TableColumn fx:id="partName" prefWidth="117.0" text="Part Name" />
@@ -55,7 +55,7 @@
                                 <TableColumn fx:id="costUnit" prefWidth="142.0" text="Cost Per Unit" />
                             </columns>
                         </TableView>
-                        <Button fx:id="addBtn" alignment="CENTER" contentDisplay="TOP" layoutX="179.0" layoutY="245.0" mnemonicParsing="false" onAction="#onAdd" text="Add" />
+                        <Button fx:id="addBtn" alignment="CENTER" contentDisplay="TOP" layoutX="179.0" layoutY="245.0" mnemonicParsing="false" onAction="#onAddPart" text="Add" />
                         <Button fx:id="modifyBtn" layoutX="233.0" layoutY="245.0" mnemonicParsing="false" onAction="#onModify" text="Modify" />
                         <Button fx:id="deleteBtn" layoutX="301.0" layoutY="245.0" mnemonicParsing="false" onAction="#onDelete" text="Delete" />
                         <Label fx:id="partsLBL" layoutX="14.0" layoutY="14.0" text="Parts">
@@ -74,7 +74,7 @@
                   <Font size="19.0" />
                </font>
             </Label>
-            <Button fx:id="exitBtn" alignment="BOTTOM_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" text="Exit" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+            <Button fx:id="exitBtn" alignment="BOTTOM_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exitSystem" text="Exit" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets right="10.0" top="4.0" />
                </GridPane.margin>
