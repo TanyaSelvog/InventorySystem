@@ -71,7 +71,7 @@
                 </Pane>
             <Label alignment="CENTER" prefHeight="19.0" prefWidth="317.0" text="Inventory Management System" textAlignment="CENTER">
                <font>
-                  <Font size="19.0" />
+                  <Font size="21.0" />
                </font>
             </Label>
             <Button fx:id="exitBtn" alignment="BOTTOM_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#exitSystem" text="Exit" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">

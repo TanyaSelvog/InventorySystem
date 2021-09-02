@@ -73,14 +73,6 @@
             </TextField>
             <Button fx:id="savePartBtn" mnemonicParsing="false" text="Save" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Button fx:id="cancelPartAddBtn" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Label fx:id="addPartLBL" prefHeight="29.0" prefWidth="91.0" text="Add Part" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin>
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
             <Label alignment="CENTER" contentDisplay="BOTTOM" text="Min" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets top="99.0" />
@@ -94,6 +86,11 @@
       <Label layoutX="75.0" layoutY="323.0" text="Cost" />
       <Label layoutX="75.0" layoutY="357.0" text="Max" />
       <Label layoutX="75.0" layoutY="393.0" text="Machine ID" />
+      <Label fx:id="addPartLBL" layoutX="75.0" layoutY="88.0" prefHeight="29.0" prefWidth="91.0" text="Add Part">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
 
    </children>
 </AnchorPane>
