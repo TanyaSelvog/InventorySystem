@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="645.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.addPartController">
+<AnchorPane prefHeight="645.0" prefWidth="649.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddPartController">
    <children>
-      <GridPane layoutX="144.0" prefHeight="645.0" prefWidth="471.0">
+      <GridPane layoutX="145.0" prefHeight="645.0" prefWidth="470.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="225.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="271.0" minWidth="10.0" prefWidth="35.0" />
@@ -19,12 +19,15 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <RadioButton fx:id="inHouseRadio" mnemonicParsing="false" text="In-House" GridPane.halignment="RIGHT">
+            <RadioButton fx:id="inHouseRadio" mnemonicParsing="false" onAction="#onInHouseAdd" text="In-House" GridPane.halignment="RIGHT">
                <padding>
                   <Insets right="10.0" />
                </padding>
+               <toggleGroup>
+                  <ToggleGroup fx:id="tgroup" />
+               </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="outsourcedBtn" mnemonicParsing="false" text="Outsourced" GridPane.columnIndex="2" GridPane.halignment="CENTER">
+            <RadioButton fx:id="outsourcedBtn" mnemonicParsing="false" onAction="#onOutsourcedAdd" text="Outsourced" toggleGroup="$tgroup" GridPane.columnIndex="2" GridPane.halignment="CENTER">
                <padding>
                   <Insets right="10.0" />
                </padding>
@@ -72,7 +75,7 @@
                </GridPane.margin>
             </TextField>
             <Button fx:id="savePartBtn" mnemonicParsing="false" text="Save" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-            <Button fx:id="cancelPartAddBtn" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button fx:id="cancelPartAddBtn" mnemonicParsing="false" onAction="#onCancelPart" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Label alignment="CENTER" contentDisplay="BOTTOM" text="Min" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets top="99.0" />
@@ -80,12 +83,12 @@
             </Label>
          </children>
       </GridPane>
-      <Label layoutX="75.0" layoutY="226.0" text="ID" />
-      <Label layoutX="75.0" layoutY="259.0" text="Name" />
-      <Label layoutX="75.0" layoutY="288.0" text="Inventory" />
-      <Label layoutX="75.0" layoutY="323.0" text="Cost" />
-      <Label layoutX="75.0" layoutY="357.0" text="Max" />
-      <Label layoutX="75.0" layoutY="393.0" text="Machine ID" />
+      <Label layoutX="55.0" layoutY="223.0" text="ID" />
+      <Label layoutX="55.0" layoutY="258.0" text="Name" />
+      <Label layoutX="55.0" layoutY="289.0" text="Inventory" />
+      <Label layoutX="55.0" layoutY="323.0" text="Cost" />
+      <Label layoutX="55.0" layoutY="358.0" text="Max" />
+      <Label fx:id="changeMe" layoutX="55.0" layoutY="393.0" text="Machine ID" />
       <Label fx:id="addPartLBL" layoutX="75.0" layoutY="88.0" prefHeight="29.0" prefWidth="91.0" text="Add Part">
          <font>
             <Font size="19.0" />

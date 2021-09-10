@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="561.0" prefWidth="885.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.modifyProductController">
+<AnchorPane prefHeight="561.0" prefWidth="885.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModifyProductController">
     <children>
         <GridPane hgap="10.0" layoutX="114.0" layoutY="68.0" prefHeight="378.0" prefWidth="613.0">
             <columnConstraints>
@@ -82,7 +82,7 @@
         </GridPane>
         <TextField layoutX="613.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="174.0" promptText="Search by Part ID or Name" />
         <Button layoutX="648.0" layoutY="494.0" mnemonicParsing="false" text="Save" />
-        <Button layoutX="729.0" layoutY="494.0" mnemonicParsing="false" text="Cancel" />
+        <Button fx:id="modProdCancelBtn" layoutX="729.0" layoutY="494.0" mnemonicParsing="false" onAction="#onModCancelBtn" text="Cancel" />
         <Button layoutX="459.0" layoutY="473.0" mnemonicParsing="false" text="Remove Associated Part" />
         <Label layoutX="51.0" layoutY="155.0" text="ID" />
         <Label layoutX="51.0" layoutY="206.0" text="Name" />
