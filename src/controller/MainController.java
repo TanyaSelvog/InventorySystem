@@ -60,6 +60,12 @@ public class MainController implements Initializable {
     invCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
     costCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
+    productTable.setItems(Inventory.getAllProducts());
+
+    productID.setCellValueFactory(new PropertyValueFactory<>("id"));
+    productName.setCellValueFactory(new PropertyValueFactory<>("name"));
+    prodLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
+    prodCost.setCellValueFactory(new PropertyValueFactory<>("price"));
 
 
     }

@@ -17,6 +17,12 @@ public class Inventory {
     public static void addTestData(){
         InHouse a = new InHouse(1,"test",10,100,1,2,8);
         Inventory.addPart(a);
+        InHouse b = new InHouse(3, "test2", 3, 8, 8, 9, 9);
+        Inventory.addPart(b);
+        InHouse c = new InHouse(33, "abc", 3, 2,3,3,3);
+        Inventory.addPart(c);
+        Product d = new Product(3, "test23", 3,8,99,9);
+        Inventory.addProduct(d);
     }
 
     public static void addPart(Part newPart){
@@ -48,6 +54,17 @@ public class Inventory {
         return allProducts;
      }
 
+
+     public static Product lookupProduct (int productId){
+       Product foundProduct = null;
+       for (Product product : allProducts){
+           if(product.getId() == productId){
+               foundProduct = product;
+           }
+       }
+       return foundProduct;
+     }
+
     public static Part lookupPart (int partId){
         Part foundPart = null;
         for (Part part : allParts){
@@ -57,8 +74,17 @@ public class Inventory {
         }
         return foundPart;
     }
+    public static ObservableList<Product> lookupProduct(String productName){
 
+       ObservableList<Product> foundProductsList = FXCollections.observableArrayList();
 
+       for (Product product : allProducts){
+           if (product.getName().equals(productName)){
+               foundProductsList.add(product);
+           }
+       }
+       return foundProductsList;
+    }
    public static ObservableList<Part> lookupPart(String partName) {
 
        ObservableList<Part> foundPartsList = FXCollections.observableArrayList();
@@ -73,4 +99,5 @@ public class Inventory {
        return foundPartsList;
    }
 }
+
 
