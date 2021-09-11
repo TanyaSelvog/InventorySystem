@@ -45,7 +45,7 @@ Part {
     }
 
     /**
-     * @param partId the id to set
+     * @param id the id to set
      */
     public void setId(int id){
         this.id = id;

@@ -71,7 +71,17 @@ public class MainController implements Initializable {
     }
 
     //Search function
+    private ObservableList<Product> searchProductName(String partialName){
+        ObservableList<Product> namedProducts = FXCollections.observableArrayList();
 
+        ObservableList<Product> allProducts = Inventory.getAllProducts();
+        for(Product product : allProducts){
+            if(product.getName().contains(partialName)){
+                namedProducts.add(product);
+            }
+        }
+        return namedProducts;
+    }
 
 
    private ObservableList<Part> searchByName(String partialName){
@@ -110,6 +120,9 @@ public class MainController implements Initializable {
             }
 
      public void onProdSearch(ActionEvent actionEvent) {
+        String q = prodSearch.getText();
+        ObservableList<Product> products = searchProductName(q);
+        productTable.setItems(products);
             }
 
      public void onModify(ActionEvent actionEvent) throws IOException {
