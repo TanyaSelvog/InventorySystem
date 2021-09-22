@@ -120,7 +120,7 @@ public class MainController implements Initializable {
             }
 
      public void onProdSearch(ActionEvent actionEvent) {
-        String q = prodSearch.getText();
+        String q = prodSearch   .getText();
         ObservableList<Product> products = searchProductName(q);
         productTable.setItems(products);
             }

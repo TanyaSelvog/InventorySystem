@@ -44,7 +44,7 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField fx:id="inventoryTextField" maxWidth="-Infinity" minWidth="-Infinity">
+                  <TextField fx:id="stockTextField" maxWidth="-Infinity" minWidth="-Infinity">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
@@ -54,7 +54,7 @@
                         <Insets top="5.0" />
                      </VBox.margin>
                   </TextField>
-                  <TextField fx:id="maxCostText" maxWidth="-Infinity" minWidth="-Infinity">
+                  <TextField fx:id="maxTextField" maxWidth="-Infinity" minWidth="-Infinity">
                      <VBox.margin>
                         <Insets top="5.0" />
                      </VBox.margin>
@@ -74,7 +74,7 @@
                   <Insets left="4.0" right="4.0" top="99.0" />
                </GridPane.margin>
             </TextField>
-            <Button fx:id="savePartBtn" mnemonicParsing="false" text="Save" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Button fx:id="savePartBtn" mnemonicParsing="false" onAction="#onSaveBtnAddPart" text="Save" GridPane.columnIndex="2" GridPane.rowIndex="2" />
             <Button fx:id="cancelPartAddBtn" mnemonicParsing="false" onAction="#onCancelPart" text="Cancel" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
             <Label alignment="CENTER" contentDisplay="BOTTOM" text="Min" textAlignment="RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <GridPane.margin>
