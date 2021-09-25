@@ -19,7 +19,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <RadioButton fx:id="inHouseRadio" mnemonicParsing="false" onAction="#onInHouseAdd" text="In-House" GridPane.halignment="RIGHT">
+            <RadioButton fx:id="inHouseRadio" mnemonicParsing="false" onAction="#onInHouseAdd" selected="true" text="In-House" GridPane.halignment="RIGHT">
                <padding>
                   <Insets right="10.0" />
                </padding>

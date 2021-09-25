@@ -73,11 +73,15 @@ public class AddPartController implements Initializable {
     private Part getPart() {
         boolean isValid = true;
         List<String> messages = new ArrayList<>();
-        String name = null;
         Integer id = null;
+        String name = null;
+        Double price = null;
         Integer stock = null;
         Integer max = null;
         Integer min = null;
+        Integer machineID = null;
+
+
 
         name = nameTextField.getText();
         if (name.isEmpty()) {
@@ -85,103 +89,95 @@ public class AddPartController implements Initializable {
             messages.add("No data in name field");
         }
 
+        String priceText = costPartText.getText();
+        if (priceText.isEmpty()) {
+            isValid = false;
+            messages.add("No data in Price field");
+        } else try {
+            price = Double.parseDouble(priceText);
+        } catch (NumberFormatException e) {
+            isValid = false;
+            messages.add("Price is not a double.");
+        }
+
+
         String stockText = stockTextField.getText();
         if (stockText.isEmpty()) {
             isValid = false;
-            messages.add("No data in stock field");
+            messages.add("No data in Stock field");
         } else try {
             stock = Integer.parseInt(stockText);
-        } catch(NumberFormatException e) {
+        } catch (NumberFormatException e) {
             isValid = false;
-            messages.add("stock is not an integer");
+            messages.add("Stock is not an integer");
         }
 
-        if (isValid) {
-            /** @TODO construct and return InHouse part, or Outsourced part */
-            /** @implNote we're hardcoding and assuming this is an InHouse */
-            return new InHouse(0, name, 0, stock, 0, 10, 555);
+        String minText = minTextField.getText();
+        if (minText.isEmpty()) {
+            isValid = false;
+            messages.add("No data in Min field");
+        } else try {
+            min = Integer.parseInt(minText);
+        } catch (NumberFormatException e) {
+            isValid = false;
+            messages.add("Min is not an integer");
         }
 
-        Alert alert = new Alert(Alert.AlertType.ERROR, String.join("\n", messages));
-        alert.showAndWait();
-        return null;
-    }
+        String maxText = maxTextField.getText();
+        if (maxText.isEmpty()) {
+            isValid = false;
+            messages.add("No data in Max field");
+        } else try {
+            max = Integer.parseInt(maxText);
+        } catch (NumberFormatException e) {
+            isValid = false;
+            messages.add("Max is not an integer");
+        }
+
+        if (min != null && max != null && min >= max) {
+            isValid = false;
+            messages.add("Min value needs to be less than Max value");
+        }
+
+        if (inHouseRadio.isSelected()) {
+            String machineText = machineIDText.getText();
+            if (machineText.isEmpty()) {
+                isValid = false;
+                messages.add("No data in MachineID field");
+            } else try {
+                machineID = Integer.parseInt(machineText);
+            } catch (NumberFormatException e) {
+                isValid = false;
+                messages.add("MachineID is not an integer");
+            }
+        }
+
+       // boolean kind = inHouseRadio.isSelected();
+
+            if (isValid) {
+                /** @TODO construct and return InHouse part, or Outsourced part */
+                /** @implNote we're hardcoding and assuming this is an InHouse */
+                return new InHouse(0, name, price, stock, min, max, 555);
+            }
+
+            Alert alert = new Alert(Alert.AlertType.ERROR, String.join("\n", messages));
+            alert.showAndWait();
+            return null;
+        }
 
     public void onSaveBtnAddPart(ActionEvent actionEvent) throws IOException {
-       // String name = nameTextField.getText();
-       // getMachineIDTest();
+
+
         Part part = getPart();
 
-        if (part != null) {
+       if (part != null) {
             // @TODO save the part in the parts TableView
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "we made a part!");
             alert.showAndWait();
         }
 
-       /** int stock = Integer.parseInt(stockTextField.getText());
-        int max = Integer.parseInt(maxTextField.getText());
-        int min = Integer.parseInt(minTextField.getText());
-        double price = Double.parseDouble(costPartText.getText());
-        String machineID = machineIDText.getText();
-
- //
-   //     InHouse newInHouse = new InHouse(id, name, price, stock, min, max, machineID);
-/**
-
-        if (!name.isEmpty()){
-            System.out.println("Good");
-            else (
-                Alert alert = new Alert(Alert.AlertType.ERROR,
-                    "Enter a positive hourly wage value.");
-            alert.showAndWait();)
-        }
-    }
-}
 
 
 
-
-
-        /**String name;
-        int stock;
-        int max;
-        try {
-           name = getNameTest();
-            System.out.println("awesome");
-            stock = getStockTest();
-            System.out.println("awesome stock");
-            max = getMaxTest();
-        } catch (Exception except) {
-            System.out.println(except.getMessage());
-            System.out.println("test");
-        }
-    }
-}
-
-
-
-
-        /**  try {
-            String name = nameTextField.getText();
-            int stock = Integer.parseInt(stockTextField.getText());
-            int max = Integer.parseInt(maxTextField.getText());
-            int min = Integer.parseInt(minTextField.getText());
-            double price = Double.parseDouble(costPartText.getText());
-            String machineID = machineIDText.getText();
-
-            if (name.isEmpty()){
-                throw new Exception ("Name is empty");
-
-            }
-            else {
-                System.out.println("test");
-            }
-        } catch (Exception except) {
-            System.out.println("Name is not empty");
-        }
-    }
-}
-         */
-
-    }
+         }
 }
