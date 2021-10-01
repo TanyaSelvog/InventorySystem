@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.RadioButton;
 
@@ -16,13 +17,12 @@ import javafx.scene.control.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.InHouse;
-import model.Outsourced;
-import model.Part;
+import model.*;
 
 
 import java.io.IOException;
 
+import static model.Inventory.addID;
 
 
 public class AddPartController implements Initializable {
@@ -33,7 +33,7 @@ public class AddPartController implements Initializable {
     public Label changeMe;
     public TextField costPartText;
     public TextField maxTextField;
-    public TextField machineIDText;
+    public TextField partDiffLabel;
     public TextField minTextField;
     public Button savePartBtn;
     public Button cancelPartAddBtn;
@@ -45,6 +45,7 @@ public class AddPartController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
 
     }
 
@@ -66,27 +67,25 @@ public class AddPartController implements Initializable {
     }
 
 
-
-
-
-
     private Part getPart() {
         boolean isValid = true;
         List<String> messages = new ArrayList<>();
-        Integer id = null;
+        //  Integer id = null;
         String name = null;
         Double price = null;
         Integer stock = null;
         Integer max = null;
         Integer min = null;
         Integer machineID = null;
-
+        String companyName = null;
+        boolean kind;
+        Part newPart = null;
 
 
         name = nameTextField.getText();
         if (name.isEmpty()) {
             isValid = false;
-            messages.add("No data in name field");
+            messages.add("No data in Name field");
         }
 
         String priceText = costPartText.getText();
@@ -139,8 +138,14 @@ public class AddPartController implements Initializable {
             messages.add("Min value needs to be less than Max value");
         }
 
+        if (tgroup.getSelectedToggle() == null) {
+            isValid = false;
+            messages.add("Select either In-House or Outsourced");
+            System.out.println("se");
+        }
+
         if (inHouseRadio.isSelected()) {
-            String machineText = machineIDText.getText();
+            String machineText = partDiffLabel.getText();
             if (machineText.isEmpty()) {
                 isValid = false;
                 messages.add("No data in MachineID field");
@@ -150,32 +155,49 @@ public class AddPartController implements Initializable {
                 isValid = false;
                 messages.add("MachineID is not an integer");
             }
+
+
         }
 
-       // boolean kind = inHouseRadio.isSelected();
-
-            if (isValid) {
-                /** @TODO construct and return InHouse part, or Outsourced part */
-                /** @implNote we're hardcoding and assuming this is an InHouse */
-                return new InHouse(0, name, price, stock, min, max, 555);
+        if (outsourcedBtn.isSelected()) {
+            String company = partDiffLabel.getText();
+            if (company.isEmpty()) {
+                isValid = false;
+                messages.add("No data in Company Name field");
             }
 
-            Alert alert = new Alert(Alert.AlertType.ERROR, String.join("\n", messages));
-            alert.showAndWait();
-            return null;
         }
 
+        if (isValid) {
+            
+            Integer id = addID();
+            if (inHouseRadio.isSelected()) {
+                InHouse newPartInHouse = new InHouse(id, name, price, stock, min, max, machineID);
+                return newPartInHouse;
+            } else if (outsourcedBtn.isSelected()) {
+                Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, companyName);
+                return newOutsourced;
+            }
+
+        }
+
+        Alert alert = new Alert(Alert.AlertType.ERROR, String.join("\n", messages));
+        alert.showAndWait();
+        
+        return null;
+    }
     public void onSaveBtnAddPart(ActionEvent actionEvent) throws IOException {
 
 
         Part part = getPart();
 
+/**
        if (part != null) {
             // @TODO save the part in the parts TableView
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "we made a part!");
             alert.showAndWait();
         }
-
+*/
 
 
 
