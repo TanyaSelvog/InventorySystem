@@ -38,7 +38,7 @@ public class ModifyPartController implements Initializable {
 
     public void onCancel(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("../view/mainForm.fxml"));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         stage.setTitle("Inventory Management System");
         stage.setScene(new Scene(root, 900, 500));
         stage.show();

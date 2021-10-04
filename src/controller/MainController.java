@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -120,21 +121,22 @@ public class MainController implements Initializable {
             }
 
      public void onProdSearch(ActionEvent actionEvent) {
-        String q = prodSearch   .getText();
+        String q = prodSearch.getText();
         ObservableList<Product> products = searchProductName(q);
         productTable.setItems(products);
             }
 
      public void onModify(ActionEvent actionEvent) throws IOException {
-                Parent root = FXMLLoader.load(getClass().getResource("../view/modifyPart.fxml"));
-                Stage stage = new Stage();
-                stage.setTitle("Modify Part");
-                stage.setScene(new Scene(root, 645, 650));
-                stage.show();
-            }
+         Parent root = FXMLLoader.load(getClass().getResource("/view/modifyPart.fxml"));
+         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+         stage.setTitle("Modify Part");
+         Scene scene = new Scene (root, 645, 650);
+         stage.setScene(scene);
+         stage.show();
+    }
 
-            public void onDelete(ActionEvent actionEvent) {
-            }
+    public void onDelete(ActionEvent actionEvent) {
+    }
 
 
   public void onSearch(ActionEvent actionEvent) {
@@ -152,11 +154,21 @@ public class MainController implements Initializable {
             }
 
 public void onAddPart(ActionEvent actionEvent) throws IOException {
-                Parent root = FXMLLoader.load(getClass().getResource("../view/addPartForm.fxml"));
+             /*   Parent root = FXMLLoader.load(getClass().getResource("../view/addPartForm.fxml"));
                 //set new stage
                 Stage stage = new Stage();
                 stage.setTitle("Add Part");
                 stage.setScene(new Scene(root, 645, 650));
                 stage.show();
-}
-   }
+*/
+
+    //setting new scene without new window
+  Parent root = FXMLLoader.load(getClass().getResource("/view/addPartForm.fxml"));
+  Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+  stage.setTitle("Add Part");
+  Scene scene = new Scene (root, 645, 650);
+  stage.setScene(scene);
+  stage.show();
+
+          }
+          }

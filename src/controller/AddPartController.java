@@ -2,6 +2,7 @@ package controller;
 
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.RadioButton;
 
 import java.net.URL;
@@ -65,6 +66,8 @@ public class AddPartController implements Initializable {
         stage.setScene(new Scene(root, 900, 500));
         stage.show();
     }
+
+
 
 
     private Part getPart() {
@@ -141,7 +144,6 @@ public class AddPartController implements Initializable {
         if (tgroup.getSelectedToggle() == null) {
             isValid = false;
             messages.add("Select either In-House or Outsourced");
-            System.out.println("se");
         }
 
         if (inHouseRadio.isSelected()) {
@@ -173,9 +175,11 @@ public class AddPartController implements Initializable {
             Integer id = addID();
             if (inHouseRadio.isSelected()) {
                 InHouse newPartInHouse = new InHouse(id, name, price, stock, min, max, machineID);
+                Inventory.addPart(newPartInHouse);
                 return newPartInHouse;
             } else if (outsourcedBtn.isSelected()) {
                 Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, companyName);
+                Inventory.addPart(newOutsourced);
                 return newOutsourced;
             }
 
@@ -199,7 +203,11 @@ public class AddPartController implements Initializable {
         }
 */
 
-
+        Parent root = FXMLLoader.load(getClass().getResource("/view/mainForm.fxml"));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene (root, 900, 500);
+        stage.setScene(scene);
+        stage.show();
 
          }
 }

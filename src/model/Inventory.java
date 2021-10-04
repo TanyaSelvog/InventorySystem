@@ -17,7 +17,7 @@ public class Inventory {
         return id;
     }
 
-   static{
+   /**static{
         addTestData();
     }
 
@@ -31,7 +31,7 @@ public class Inventory {
         Product d = new Product(3, "test23", 3,8,99,9);
         Inventory.addProduct(d);
     }
-
+*/
     public static void addPart(Part newPart){
         allParts.add(newPart);
 

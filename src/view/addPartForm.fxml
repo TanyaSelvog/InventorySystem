@@ -85,7 +85,7 @@
       </GridPane>
       <Label layoutX="55.0" layoutY="223.0" text="ID" />
       <Label layoutX="55.0" layoutY="258.0" text="Name" />
-      <Label layoutX="55.0" layoutY="289.0" text="Inventory" />
+      <Label layoutX="55.0" layoutY="289.0" text="Stock" />
       <Label layoutX="55.0" layoutY="323.0" text="Cost" />
       <Label layoutX="55.0" layoutY="358.0" text="Max" />
       <Label fx:id="changeMe" layoutX="55.0" layoutY="393.0" text="Machine ID" />
