@@ -50,26 +50,7 @@ public class MainController implements Initializable {
     public TextField searchParts;
 
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
-    partTable.setItems(Inventory.getAllParts());
-
-    partIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-    partNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-    invCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
-    costCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-    productTable.setItems(Inventory.getAllProducts());
-
-    productID.setCellValueFactory(new PropertyValueFactory<>("id"));
-    productName.setCellValueFactory(new PropertyValueFactory<>("name"));
-    prodLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
-    prodCost.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-
-    }
 
     //Search function
     private ObservableList<Product> searchProductName(String partialName){
@@ -171,4 +152,25 @@ public void onAddPart(ActionEvent actionEvent) throws IOException {
   stage.show();
 
           }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+
+        partTable.setItems(Inventory.getAllParts());
+
+        partIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        partNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        invCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        costCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        productTable.setItems(Inventory.getAllProducts());
+
+        productID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        productName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        prodLevel.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        prodCost.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+
+    }
           }
