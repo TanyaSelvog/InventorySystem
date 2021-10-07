@@ -34,10 +34,16 @@ public class ModifyPartController implements Initializable {
     private Part partSelected;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        //TODO clean up and complete this
+        TextField nameText = null;
         partSelected = MainController.getModPart();
 
         String nameTest = partSelected.getName();
-        System.out.println(nameTest);
+        nameTextField.setText(nameTest);
+
+        Integer maxTest = partSelected.getMax();
+        maxCostText.setText(String.valueOf(maxTest));
+        System.out.println(nameTest + "" + maxTest);
         //nameTextField = partSelected.getName();
 
        // String name = nameTextField.getText();
