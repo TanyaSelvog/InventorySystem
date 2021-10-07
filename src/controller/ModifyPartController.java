@@ -7,6 +7,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Inventory;
+import model.Part;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +28,8 @@ public class ModifyPartController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        System.out.println(getClass().getName() + "in initialize!");
+//testing for TE this needs to be blank
     }
 
     public void onInHouseModify(ActionEvent actionEvent) {
@@ -42,6 +46,15 @@ public class ModifyPartController implements Initializable {
         stage.setTitle("Inventory Management System");
         stage.setScene(new Scene(root, 900, 500));
         stage.show();
-
     }
-}
+
+    public int testMe(){
+        int x = 5;
+
+        System.out.println(x);
+        return x;
+    }
+    }
+
+
+

@@ -114,14 +114,39 @@ public class MainController implements Initializable {
 
      public void onModify(ActionEvent actionEvent) throws IOException {
 
-        modifiedPart();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/view/modifyPart.fxml"));
+         try {
+             //load the running back screen
+
+             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/modifyPart.fxml"));
+             Parent root = loader.load();
+
+             // must get access to the controller to make the screen
+             //so using the getController method
+             ModifyPartController te = loader.getController();
+             te.testMe();
+
+             //set the stage
+             Stage stage = new Stage();
+             stage.setTitle("Modify Part");
+             Scene scene = new Scene (root, 645, 650);
+             stage.setScene(scene);
+             stage.show();
+         }
+         catch(Exception e){
+             e.printStackTrace();
+         }
+
+         modifiedPart();
+
+/**
+         Parent root = FXMLLoader.load(getClass().getResource("/view/modifyPart.fxml"));
          Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
          stage.setTitle("Modify Part");
          Scene scene = new Scene (root, 645, 650);
          stage.setScene(scene);
          stage.show();
+ */
     }
 
     public void onDelete(ActionEvent actionEvent) {
@@ -182,7 +207,7 @@ public void onAddPart(ActionEvent actionEvent) throws IOException {
 
     }
 
-    public void modifiedPart(){
+    public Part modifiedPart(){
         /**
          *
 
@@ -193,6 +218,7 @@ public void onAddPart(ActionEvent actionEvent) throws IOException {
           */
         Part partRow = partTable.getSelectionModel().getSelectedItem();
        System.out.println(partRow.toString());
+       return partRow;
 
         //ObservableList selectedItems = partTable.getSelectionModel().getSelectedItems();
     }
