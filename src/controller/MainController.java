@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.InHouse;
 import model.Inventory;
 import model.Part;
 
@@ -27,12 +26,16 @@ import model.Product;
 
 public class MainController implements Initializable {
 
+    private static Part modPart;
+
+    public static Part getModPart() {
+        return modPart;
+    }
+
     public Button exitBtn;
-    @FXML
-    private TableView<Part> partTable;
-    /**
+
     public TableView partTable;
-     */
+
     public TableView productTable;
     public TableColumn productID;
     public TableColumn productName;
@@ -53,6 +56,7 @@ public class MainController implements Initializable {
     public Button deleteBtn;
     public Label partsLBL;
     public TextField searchParts;
+
 
 
 
@@ -114,40 +118,22 @@ public class MainController implements Initializable {
 
      public void onModify(ActionEvent actionEvent) throws IOException {
 
+         modPart = (Part) partTable.getSelectionModel().getSelectedItem();
 
-         try {
-             //load the running back screen
-
-             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/modifyPart.fxml"));
-             Parent root = loader.load();
-
-             // must get access to the controller to make the screen
-             //so using the getController method
-             ModifyPartController te = loader.getController();
-             te.testMe();
-
-             //set the stage
-             Stage stage = new Stage();
-             stage.setTitle("Modify Part");
-             Scene scene = new Scene (root, 645, 650);
+         if (modPart == null) {
+             Alert alert = new Alert(Alert.AlertType.ERROR, ("Select a Part to modify."));
+             alert.showAndWait();
+         } else {
+             Parent parent = FXMLLoader.load(getClass().getResource("../view/modifyPart.fxml"));
+             Scene scene = new Scene(parent);
+             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
              stage.setScene(scene);
              stage.show();
          }
-         catch(Exception e){
-             e.printStackTrace();
-         }
+     }
 
-         modifiedPart();
 
-/**
-         Parent root = FXMLLoader.load(getClass().getResource("/view/modifyPart.fxml"));
-         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-         stage.setTitle("Modify Part");
-         Scene scene = new Scene (root, 645, 650);
-         stage.setScene(scene);
-         stage.show();
- */
-    }
+
 
     public void onDelete(ActionEvent actionEvent) {
     }
@@ -207,19 +193,7 @@ public void onAddPart(ActionEvent actionEvent) throws IOException {
 
     }
 
-    public Part modifiedPart(){
-        /**
-         *
 
-       Part modPart = (Part) partTable.getSelectionModel().getSelectedItem();
-        System.out.println("clicked" + modPart.toString());
-    }
-          }
-          */
-        Part partRow = partTable.getSelectionModel().getSelectedItem();
-       System.out.println(partRow.toString());
-       return partRow;
 
-        //ObservableList selectedItems = partTable.getSelectionModel().getSelectedItems();
-    }
-}
+
+            }

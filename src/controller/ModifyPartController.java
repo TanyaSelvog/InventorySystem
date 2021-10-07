@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import model.Inventory;
 import model.Part;
 
 import java.io.IOException;
@@ -24,12 +23,30 @@ public class ModifyPartController implements Initializable {
     public Label modifyChange;
     public Label addPartLBL;
     public Button cancelPartAddBtn;
+    public Button savePartBtn;
+    public TextField minTextField;
+    public TextField machineIDText;
+    public TextField maxCostText;
+    public TextField costPartText;
+    public TextField inventoryTextField;
+    public TextField nameTextField;
 
+    private Part partSelected;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        partSelected = MainController.getModPart();
 
+        String nameTest = partSelected.getName();
+        System.out.println(nameTest);
+        //nameTextField = partSelected.getName();
+
+       // String name = nameTextField.getText();
+
+
+        // Testing
+        System.out.println(partSelected);
         System.out.println(getClass().getName() + "in initialize!");
-//testing for TE this needs to be blank
+
     }
 
     public void onInHouseModify(ActionEvent actionEvent) {
@@ -48,13 +65,14 @@ public class ModifyPartController implements Initializable {
         stage.show();
     }
 
-    public int testMe(){
-        int x = 5;
 
-        System.out.println(x);
-        return x;
-    }
-    }
 
+
+
+
+
+
+
+}
 
 
