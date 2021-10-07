@@ -125,6 +125,13 @@ Part {
         this.max = max;
     }
 
+    public String toString()
+    {
+        String tr = "Name: " + name + "\nmin: " + min + "\nstock: " + stock + "\nmax: " + max + "\nid: " + id + "\nprice: " + price;
+        return tr;
+    }
+
+
 
 
 }

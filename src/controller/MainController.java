@@ -3,6 +3,7 @@ package controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -27,7 +28,11 @@ import model.Product;
 public class MainController implements Initializable {
 
     public Button exitBtn;
+    @FXML
+    private TableView<Part> partTable;
+    /**
     public TableView partTable;
+     */
     public TableView productTable;
     public TableColumn productID;
     public TableColumn productName;
@@ -108,7 +113,10 @@ public class MainController implements Initializable {
             }
 
      public void onModify(ActionEvent actionEvent) throws IOException {
-         Parent root = FXMLLoader.load(getClass().getResource("/view/modifyPart.fxml"));
+
+        modifiedPart();
+
+        Parent root = FXMLLoader.load(getClass().getResource("/view/modifyPart.fxml"));
          Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
          stage.setTitle("Modify Part");
          Scene scene = new Scene (root, 645, 650);
@@ -173,4 +181,19 @@ public void onAddPart(ActionEvent actionEvent) throws IOException {
 
 
     }
+
+    public void modifiedPart(){
+        /**
+         *
+
+       Part modPart = (Part) partTable.getSelectionModel().getSelectedItem();
+        System.out.println("clicked" + modPart.toString());
+    }
           }
+          */
+        Part partRow = partTable.getSelectionModel().getSelectedItem();
+       System.out.println(partRow.toString());
+
+        //ObservableList selectedItems = partTable.getSelectionModel().getSelectedItems();
+    }
+}
