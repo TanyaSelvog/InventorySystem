@@ -26,10 +26,12 @@ public class Inventory {
         Inventory.addPart(a);
         InHouse b = new InHouse(3, "test2", 3, 8, 8, 9, 9);
         Inventory.addPart(b);
-        InHouse c = new InHouse(33, "abc", 3, 2, 3, 3, 3);
+        InHouse c = new InHouse(33, "abc", 3, 2, 1, 3, 3);
         Inventory.addPart(c);
         Product d = new Product(3, "test23", 3, 8, 99, 9);
         Inventory.addProduct(d);
+        Outsourced outsourcedA = new Outsourced(4 ,"OutExample", 30, 2, 1, 88, "SparrowO");
+        Inventory.addPart(outsourcedA);
     }
 
     public static void addPart(Part newPart) {
@@ -44,11 +46,12 @@ public class Inventory {
 
 
     public static void updatePart(int index, Part selectedPart) {
+            allParts.set(index, selectedPart);
 
     }
 
     public static void updateProduct(int index, Product selectedProduct) {
-
+        allProducts.set(index, selectedProduct);
     }
 
     public static ObservableList<Part> getAllParts() {
