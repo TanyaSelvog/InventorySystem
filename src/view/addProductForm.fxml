@@ -44,26 +44,26 @@
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin></TextField>
-                  <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="174.0">
+                  <TextField fx:id="addProductNameTF" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="174.0">
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin></TextField>
-                  <TextField maxWidth="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="134.0">
+                  <TextField fx:id="addStockProdTF" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="134.0">
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin></TextField>
-                  <TextField maxWidth="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="134.0">
+                  <TextField fx:id="addPriceProdTF" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="134.0">
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin></TextField>
                   
-                  <TextField maxWidth="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="132.0">
+                  <TextField fx:id="addMaxProd" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="132.0">
                      <VBox.margin>
                         <Insets bottom="20.0" />
                      </VBox.margin></TextField>
                </children>
             </VBox>
-            <TextField maxWidth="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="79.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <TextField fx:id="addMinProdTF" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="79.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets bottom="40.0" />
                </GridPane.margin>
@@ -81,7 +81,7 @@
          </children>
       </GridPane>
       <TextField layoutX="613.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="174.0" promptText="Search by Part ID or Name" />
-      <Button layoutX="648.0" layoutY="494.0" mnemonicParsing="false" text="Save" />
+      <Button fx:id="saveProdBtn" layoutX="648.0" layoutY="494.0" mnemonicParsing="false" onAction="#onSaveProdAdd" text="Save" />
       <Button fx:id="productCancelBtn" layoutX="729.0" layoutY="494.0" mnemonicParsing="false" onAction="#onCancelBtn" text="Cancel" />
       <Button layoutX="459.0" layoutY="473.0" mnemonicParsing="false" text="Remove Associated Part" />
       <Label layoutX="51.0" layoutY="155.0" text="ID" />

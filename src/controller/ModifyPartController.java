@@ -1,8 +1,11 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -37,48 +40,13 @@ public class ModifyPartController implements Initializable {
     public TextField nameTextField;
 
     private Part selectedPart;
-    private InHouse testIH;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TODO Clean up & add IN/OUT choices & ID
-
-        selectedPart = MainController.getModPart();
-
-        String nameTest = selectedPart.getName();
-        nameTextField.setText(nameTest);
-
-        Double priceTest = selectedPart.getPrice();
-        costPartText.setText(String.valueOf(priceTest));
-
-        Integer stockTest = selectedPart.getStock();
-        inventoryTextField.setText(String.valueOf(stockTest));
-
-        Integer minTest = selectedPart.getMin();
-        minTextField.setText(String.valueOf(minTest));
-
-        Integer maxTest = selectedPart.getMax();
-        maxTextField.setText(String.valueOf(maxTest));
-
-        if (selectedPart instanceof InHouse) {
-            inHouseRadio.setSelected(true);
-            machineIDText.setText(String.valueOf(((InHouse) selectedPart).getMachineId()));
-            modifyChange.setText("Machine ID");
-        } else {
-            outsourcedBtn.setSelected(true);
-            machineIDText.setText(String.valueOf(((Outsourced) selectedPart).getCompanyName()));
-            modifyChange.setText("Company Name");
-        }
-
-
-    }
+    private int index;
 
 
     public void onInHouseModify(ActionEvent actionEvent) {
         modifyChange.setText("Machine ID");
     }
 
-    //DONT BELIEVE THIS IS NEEDED ANYMORE (AS OF AFTERNOON 10.7.2021)
     public void onOutsourcedModify(ActionEvent actionEvent) {
         modifyChange.setText("Company Name");
     }
@@ -92,125 +60,89 @@ public class ModifyPartController implements Initializable {
         stage.show();
     }
 
-
-    public void onSaveModify(ActionEvent actionEvent) {
-
-Part updatePart = getPart();
+    public void returnMainScreen(ActionEvent actionEvent) throws IOException {
+        Parent parent = FXMLLoader.load(getClass().getResource("../view/mainForm.fxml"));
+        Scene scene = new Scene(parent);
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setTitle("Inventory Management System");
+        stage.setScene(scene);
+        stage.show();
     }
 
-    private Part getPart() {
-        boolean isValid = true;
-        List<String> messages = new ArrayList<>();
-        Double price = null;
-        Integer stock = null;
-        Integer max = null;
-        Integer min = null;
-        Integer machineID = null;
-        String companyName = null;
+    public void onSaveModify(ActionEvent actionEvent) throws IOException {
 
-
-        String name = nameTextField.getText();
-        if (name.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Name field");
-        }
-
-        String priceText = costPartText.getText();
-        if (priceText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Price field");
-        } else try {
-            price = Double.parseDouble(priceText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Price is not a double.");
-        }
-
-
-        String stockText = inventoryTextField.getText();
-        if (stockText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Stock field");
-        } else try {
-            stock = Integer.parseInt(stockText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Stock is not an integer");
-        }
-
-        String minText = minTextField.getText();
-        if (minText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Min field");
-        } else try {
-            min = Integer.parseInt(minText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Min is not an integer");
-        }
-
-        String maxText = maxTextField.getText();
-        if (maxText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Max field");
-        } else try {
-            max = Integer.parseInt(maxText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Max is not an integer");
-        }
-
-        if (min != null && max != null && min >= max) {
-            isValid = false;
-            messages.add("Min value needs to be less than Max value");
-        }
-
-
-        if (inHouseRadio.isSelected()) {
-            String machineText = modifyChange.getText();
-            if (machineText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in MachineID field");
-            } else try {
-                machineID = Integer.parseInt(machineText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("MachineID is not an integer");
-            }
-
-
-        }
-
-        if (outsourcedBtn.isSelected()) {
-            String company = modifyChange.getText();
-            if (company.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Company Name field");
-            }
-
-        }
-
-/**        if (isValid) {
+        try {
+            int id = selectedPart.getId();
+            String name = nameTextField.getText();
+            Double price = Double.parseDouble(costPartText.getText());
+            int stock = Integer.parseInt(inventoryTextField.getText());
+            int min = Integer.parseInt(minTextField.getText());
+            int max = Integer.parseInt(maxTextField.getText());
+            int machineID;
+            String companyName;
 
             if (inHouseRadio.isSelected()) {
+                machineID = Integer.parseInt(machineIDText.getText());
                 InHouse newPartInHouse = new InHouse(id, name, price, stock, min, max, machineID);
-                Inventory.addPart(newPartInHouse);
-                return newPartInHouse;
-
-            } else if (outsourcedBtn.isSelected()) {
+                Inventory.updatePart(index, newPartInHouse);
+            }else if(outsourcedBtn.isSelected()) {
+                companyName = machineIDText.getText();
                 Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, companyName);
-                Inventory.addPart(newOutsourced);
-                return newOutsourced;
-            }
- */
-        Alert alert = new Alert(Alert.AlertType.ERROR, String.join("\n", messages));
-        alert.showAndWait();
+                Inventory.updatePart(index, newOutsourced);
 
-        return null;
+
+
+            }
+
+        } catch (Exception e) {
+            System.out.println("Modify part is not working like it should.");
         }
+
+        System.out.println(index);
+        returnMainScreen(actionEvent);
     }
 
 
 
+@Override
+public void initialize(URL url, ResourceBundle resourceBundle) {
+    //TODO Clean up & add IN/OUT choices & ID
 
+    selectedPart = MainController.getModPart();
+    index = MainController.getIndexPart();
+
+    //System.out.println(index);
+    String nameTest = selectedPart.getName();
+    nameTextField.setText(nameTest);
+
+    Double priceTest = selectedPart.getPrice();
+    costPartText.setText(String.valueOf(priceTest));
+
+    Integer stockTest = selectedPart.getStock();
+    inventoryTextField.setText(String.valueOf(stockTest));
+
+    Integer minTest = selectedPart.getMin();
+    minTextField.setText(String.valueOf(minTest));
+
+    Integer maxTest = selectedPart.getMax();
+    maxTextField.setText(String.valueOf(maxTest));
+
+    if (selectedPart instanceof InHouse) {
+        inHouseRadio.setSelected(true);
+        machineIDText.setText(String.valueOf(((InHouse) selectedPart).getMachineId()));
+
+//            Integer.parseInt(machineText);
+        modifyChange.setText("Machine ID");
+    } else {
+        outsourcedBtn.setSelected(true);
+        machineIDText.setText(String.valueOf(((Outsourced) selectedPart).getCompanyName()));
+        modifyChange.setText("Company Name");
+    }
+
+    System.out.println(selectedPart.toString());
+    System.out.println("Now the index is: " + index);
+
+
+    }
+}
 

@@ -17,6 +17,7 @@ import model.Part;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.scene.control.TableColumn;
@@ -30,6 +31,12 @@ public class MainController implements Initializable {
 
     public static Part getModPart() {
         return modPart;
+    }
+
+    private static Part deletedPart;
+    private static int index;
+    public static int getIndexPart(){
+        return index;
     }
 
     public Button exitBtn;
@@ -108,17 +115,19 @@ public class MainController implements Initializable {
 
 
     public void onDeleteProduct(ActionEvent actionEvent) {
-            }
+    }
 
      public void onProdSearch(ActionEvent actionEvent) {
         String q = prodSearch.getText();
         ObservableList<Product> products = searchProductName(q);
         productTable.setItems(products);
-            }
+    }
 
      public void onModify(ActionEvent actionEvent) throws IOException {
 
-         modPart = (Part) partTable.getSelectionModel().getSelectedItem();
+        modPart = (Part) partTable.getSelectionModel().getSelectedItem();
+        index = partTable.getSelectionModel().getSelectedIndex();
+        System.out.println("Index for this part is: " + index);
 
          if (modPart == null) {
              Alert alert = new Alert(Alert.AlertType.ERROR, ("Select a Part to modify."));
@@ -136,7 +145,25 @@ public class MainController implements Initializable {
 
 
     public void onDelete(ActionEvent actionEvent) {
-    }
+
+        deletedPart = (Part) partTable.getSelectionModel().getSelectedItem();
+
+        if (deletedPart != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Do you want to delete the selected part?");
+            Optional<ButtonType> userAnswer = alert.showAndWait();
+            if (userAnswer.isPresent() && userAnswer.get() == ButtonType.OK) {
+                Inventory.deletePart(deletedPart);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Select a part to delete."));
+            alert.showAndWait();
+        }
+
+
+        }
+
+
 
 
   public void onSearch(ActionEvent actionEvent) {
@@ -145,8 +172,17 @@ public class MainController implements Initializable {
         partTable.setItems(parts);
             }
 
- public void onAdd(ActionEvent actionEvent) {
-            }
+ public void onAdd(ActionEvent actionEvent) throws IOException{
+     Parent root = FXMLLoader.load(getClass().getResource("/view/addProductForm.fxml"));
+     Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+     stage.setTitle("Add Part");
+     Scene scene = new Scene (root, 885, 561);
+     stage.setScene(scene);
+     stage.show();
+
+ }
+
+
 
  public void exitSystem(ActionEvent actionEvent) {
                 Stage stage = (Stage) exitBtn.getScene().getWindow();
@@ -154,14 +190,6 @@ public class MainController implements Initializable {
             }
 
 public void onAddPart(ActionEvent actionEvent) throws IOException {
-             /*   Parent root = FXMLLoader.load(getClass().getResource("../view/addPartForm.fxml"));
-                //set new stage
-                Stage stage = new Stage();
-                stage.setTitle("Add Part");
-                stage.setScene(new Scene(root, 645, 650));
-                stage.show();
-*/
-
     //setting new scene without new window
   Parent root = FXMLLoader.load(getClass().getResource("/view/addPartForm.fxml"));
   Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();

@@ -17,7 +17,7 @@ public class Inventory {
         return id;
     }
 
-    static {
+   static {
         addTestData();
     }
 
@@ -46,7 +46,9 @@ public class Inventory {
 
 
     public static void updatePart(int index, Part selectedPart) {
-            allParts.set(index, selectedPart);
+
+
+        allParts.set(index, selectedPart);
 
     }
 
@@ -110,6 +112,15 @@ public class Inventory {
         return foundPartsList;
     }
 
+    public static boolean deletePart(Part selectedPart) {
+        if (allParts.contains(selectedPart)) {
+            allParts.remove(selectedPart);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 }
 
