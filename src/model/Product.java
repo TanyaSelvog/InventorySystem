@@ -13,7 +13,7 @@ public class Product {
     private int max;
 
 
-    private static ObservableList<Part> associatedParts = FXCollections.observableArrayList();
+    private  ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
 
     //constructor

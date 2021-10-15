@@ -28,7 +28,7 @@ public class Inventory {
         Inventory.addPart(b);
         InHouse c = new InHouse(33, "abc", 3, 2, 1, 3, 3);
         Inventory.addPart(c);
-        Product d = new Product(3, "test23", 3, 8, 99, 9);
+        Product d = new Product(3, "test23", 3, 8, 99, 999);
         Inventory.addProduct(d);
         Outsourced outsourcedA = new Outsourced(4 ,"OutExample", 30, 2, 1, 88, "SparrowO");
         Inventory.addPart(outsourcedA);

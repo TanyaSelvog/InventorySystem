@@ -19,23 +19,23 @@
           <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="135.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="331.0" GridPane.columnIndex="2">
+            <TableView fx:id="addProdTopTable" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="151.0" prefWidth="352.0" GridPane.columnIndex="2">
               <columns>
-                <TableColumn prefWidth="54.0" text="Part ID" />
-                <TableColumn prefWidth="90.0" text="Part Name" />
-                  <TableColumn prefWidth="96.0" text="Inventory Level" />
-                  <TableColumn prefWidth="90.0" text="Cost Per Unit" />
+                <TableColumn fx:id="idCol" prefWidth="54.0" text="Part ID" />
+                <TableColumn fx:id="nameCol" prefWidth="90.0" text="Part Name" />
+                  <TableColumn fx:id="invCol" prefWidth="122.0" text="Inventory Level" />
+                  <TableColumn fx:id="costCol" prefWidth="88.0" text="Cost Per Unit" />
               </columns>
                <GridPane.margin>
                   <Insets top="10.0" />
                </GridPane.margin>
             </TableView>
-            <TableView minHeight="-Infinity" minWidth="-Infinity" prefHeight="171.0" prefWidth="332.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <TableView fx:id="addProdBtmTable" minHeight="-Infinity" minWidth="-Infinity" prefHeight="171.0" prefWidth="352.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
               <columns>
-                <TableColumn prefWidth="60.0" text="Part ID" />
-                <TableColumn prefWidth="90.0" text="Part Name" />
-                  <TableColumn prefWidth="83.0" text="Inventory Level" />
-                  <TableColumn prefWidth="98.0" text="Cost Per Unit" />
+                <TableColumn fx:id="idColAssociated" prefWidth="60.0" text="Part ID" />
+                <TableColumn fx:id="nameColAssociated" prefWidth="90.0" text="Part Name" />
+                  <TableColumn fx:id="invColAssociated" prefWidth="107.0" text="Inventory Level" />
+                  <TableColumn fx:id="costColAssociated" prefWidth="94.0" text="Cost Per Unit" />
               </columns>
             </TableView>
             <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
@@ -68,7 +68,7 @@
                   <Insets bottom="40.0" />
                </GridPane.margin>
             </TextField>
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" text="Add" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Button fx:id="addBtn" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#onAddFromTopTableToBtm" text="Add" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <GridPane.margin>
                   <Insets bottom="40.0" />
                </GridPane.margin>
@@ -80,7 +80,7 @@
             </Label>
          </children>
       </GridPane>
-      <TextField layoutX="613.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="174.0" promptText="Search by Part ID or Name" />
+      <TextField fx:id="searchField" layoutX="613.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#onSearch" prefHeight="29.0" prefWidth="174.0" promptText="Search by Part ID or Name" />
       <Button fx:id="saveProdBtn" layoutX="648.0" layoutY="494.0" mnemonicParsing="false" onAction="#onSaveProdAdd" text="Save" />
       <Button fx:id="productCancelBtn" layoutX="729.0" layoutY="494.0" mnemonicParsing="false" onAction="#onCancelBtn" text="Cancel" />
       <Button layoutX="459.0" layoutY="473.0" mnemonicParsing="false" text="Remove Associated Part" />

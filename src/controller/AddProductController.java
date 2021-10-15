@@ -1,13 +1,15 @@
 package controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.*;
 
@@ -25,13 +27,65 @@ public class AddProductController implements Initializable {
     public TextField addMaxProd;
     public TextField addMinProdTF;
     public Button saveProdBtn;
+    public TableView addProdTopTable;
+    public TableColumn idCol;
+    public TableColumn nameCol;
+    public TableColumn invCol;
+    public TableColumn costCol;
+    public TableView addProdBtmTable;
+    public TableColumn idColAssociated;
+    public TableColumn nameColAssociated;
+    public TableColumn invColAssociated;
+    public TableColumn costColAssociated;
+    public Button addBtn;
+    public TextField searchField;
+    private static Part partToAdd;
+
+
+    /**private ObservableList<Part> getAllAssociatedParts(){
+        ObservableList<Part> associatedPartList = FXCollections.observableArrayList();
+
+        ObservableList<Part> allParts = Inventory.getAllParts();
+        partToAdd = (Part) addProdTopTable.getSelectionModel().getSelectedItem();
+
+        return associatedPartList;
+    }
+
+    //to search for parts based on name
+
+*/
+    private ObservableList<Part> searchByName(String partialName){
+        ObservableList<Part> namedParts = FXCollections.observableArrayList();
+
+        ObservableList<Part> allParts = Inventory.getAllParts();
+        for(Part part : allParts){
+            if(part.getName().contains(partialName)){
+                namedParts.add(part);
+            }
+        }
+
+        return namedParts;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        addProdTopTable.setItems(Inventory.getAllParts());
+
+        idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        invCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        costCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        //addProdBtmTable.setItems(getAllAssociatedParts());
+
+        idColAssociated.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameColAssociated.setCellValueFactory(new PropertyValueFactory<>("name"));
+        invColAssociated.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        costColAssociated.setCellValueFactory(new PropertyValueFactory<>("price"));
 
     }
 
-    private Product getProduct(){
+   private Product getProduct(){
         boolean isValid = true;
         List<String> messages = new ArrayList<>();
         Double price = null;
@@ -121,8 +175,30 @@ public class AddProductController implements Initializable {
         stage.setScene(new Scene(root, 900, 500));
         stage.show();
     }
+    public void returnMainScreen(ActionEvent actionEvent) throws IOException {
+        Parent parent = FXMLLoader.load(getClass().getResource("../view/mainForm.fxml"));
+        Scene scene = new Scene(parent);
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setTitle("Inventory Management System");
+        stage.setScene(scene);
+        stage.show();
+    }
 
-    public void onSaveProdAdd(ActionEvent actionEvent) {
+    public void onSaveProdAdd(ActionEvent actionEvent) throws IOException {
+      //  partToAdd = (Part) addProdTopTable.getSelectionModel().getSelectedItem();
+        //System.out.println(partToAdd.toString());
         Product testProd = getProduct();
+        returnMainScreen(actionEvent);
+    }
+
+    public void onAddFromTopTableToBtm(ActionEvent actionEvent) {
+        //this btn is for adding a row from top table to bottom (associating with the product)
+
+    }
+
+    public void onSearch(ActionEvent actionEvent) {
+        String q = searchField.getText();
+        ObservableList<Part> parts = searchByName(q);
+        addProdTopTable.setItems(parts);
     }
 }

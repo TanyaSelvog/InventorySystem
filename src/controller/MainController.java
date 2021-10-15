@@ -32,6 +32,11 @@ public class MainController implements Initializable {
     public static Part getModPart() {
         return modPart;
     }
+    private static Product modProduct;
+
+    public static Product getModProduct() {
+        return modProduct;
+    }
 
     private static Part deletedPart;
     private static int index;
@@ -105,6 +110,8 @@ public class MainController implements Initializable {
     }
 
     public void onModifyProduct(ActionEvent actionEvent) throws Exception {
+
+        modProduct = (Product) productTable.getSelectionModel().getSelectedItem();
                 Parent root = FXMLLoader.load(getClass().getResource("../view/modifyProduct.fxml"));
                 //set new stage
                 Stage stage = new Stage();
