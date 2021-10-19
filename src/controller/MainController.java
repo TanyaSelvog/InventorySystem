@@ -39,11 +39,15 @@ public class MainController implements Initializable {
     }
 
     private static Part deletedPart;
+    private Product deletedProduct;
     private static int index;
     public static int getIndexPart(){
         return index;
     }
-
+    private static int indexProduct;
+    public static int getIndexProduct(){
+        return indexProduct;
+    }
     public Button exitBtn;
 
     public TableView partTable;
@@ -112,6 +116,9 @@ public class MainController implements Initializable {
     public void onModifyProduct(ActionEvent actionEvent) throws Exception {
 
         modProduct = (Product) productTable.getSelectionModel().getSelectedItem();
+
+        indexProduct = productTable.getSelectionModel().getSelectedIndex();
+
                 Parent root = FXMLLoader.load(getClass().getResource("../view/modifyProduct.fxml"));
                 //set new stage
                 Stage stage = new Stage();
@@ -122,6 +129,20 @@ public class MainController implements Initializable {
 
 
     public void onDeleteProduct(ActionEvent actionEvent) {
+        deletedProduct = (Product) productTable.getSelectionModel().getSelectedItem();
+
+        if (deletedProduct != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Do you want to delete the selected product?");
+            Optional<ButtonType> userAnswer = alert.showAndWait();
+            if (userAnswer.isPresent() && userAnswer.get() == ButtonType.OK) {
+                Inventory.deleteProduct(deletedProduct);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Select a product to delete."));
+            alert.showAndWait();
+        }
+
     }
 
      public void onProdSearch(ActionEvent actionEvent) {

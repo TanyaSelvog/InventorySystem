@@ -27,7 +27,7 @@ public class AddProductController implements Initializable {
     public TextField addMaxProd;
     public TextField addMinProdTF;
     public Button saveProdBtn;
-    public TableView addProdTopTable;
+    public TableView<Part> addProdTopTable;
     public TableColumn idCol;
     public TableColumn nameCol;
     public TableColumn invCol;
@@ -41,19 +41,13 @@ public class AddProductController implements Initializable {
     public TextField searchField;
     private static Part partToAdd;
 
+    private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
-    /**private ObservableList<Part> getAllAssociatedParts(){
-        ObservableList<Part> associatedPartList = FXCollections.observableArrayList();
 
-        ObservableList<Part> allParts = Inventory.getAllParts();
-        partToAdd = (Part) addProdTopTable.getSelectionModel().getSelectedItem();
-
-        return associatedPartList;
-    }
 
     //to search for parts based on name
 
-*/
+
     private ObservableList<Part> searchByName(String partialName){
         ObservableList<Part> namedParts = FXCollections.observableArrayList();
 
@@ -69,6 +63,7 @@ public class AddProductController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         addProdTopTable.setItems(Inventory.getAllParts());
 
         idCol.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -76,7 +71,7 @@ public class AddProductController implements Initializable {
         invCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         costCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        //addProdBtmTable.setItems(getAllAssociatedParts());
+
 
         idColAssociated.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColAssociated.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -84,6 +79,7 @@ public class AddProductController implements Initializable {
         costColAssociated.setCellValueFactory(new PropertyValueFactory<>("price"));
 
     }
+
 
    private Product getProduct(){
         boolean isValid = true;
@@ -193,6 +189,9 @@ public class AddProductController implements Initializable {
 
     public void onAddFromTopTableToBtm(ActionEvent actionEvent) {
         //this btn is for adding a row from top table to bottom (associating with the product)
+        Part selectedPart = addProdTopTable.getSelectionModel().getSelectedItem();
+        associatedParts.add(selectedPart);
+        addProdBtmTable.setItems(associatedParts);
 
     }
 

@@ -121,6 +121,15 @@ public class Inventory {
             return false;
         }
     }
+    public static boolean deleteProduct(Product selectedProduct) {
+        if (allProducts.contains(selectedProduct)) {
+            allProducts.remove(selectedProduct);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
 }
 
