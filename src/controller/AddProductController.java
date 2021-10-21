@@ -200,9 +200,22 @@ public class AddProductController implements Initializable {
     }
 
     public void onSearch(ActionEvent actionEvent) {
-        String q = searchField.getText();
-        ObservableList<Part> parts = searchByName(q);
-        addProdTopTable.setItems(parts);
+
+
+        ObservableList<Part> allParts = Inventory.getAllParts();
+        ObservableList<Part> searchList = FXCollections.observableArrayList();
+
+        String searchProds = searchField.getText();
+
+        for (Part part : allParts) {
+            if (String.valueOf(part.getId()).contains(searchProds) || part.getName().contains(searchProds)) {
+
+                searchList.add(part);
+            }
+
+
+            addProdTopTable.setItems(searchList);
+        }
     }
 
     public void onRemovePart(ActionEvent actionEvent) {

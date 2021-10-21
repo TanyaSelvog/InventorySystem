@@ -90,14 +90,18 @@ public class MainController implements Initializable {
 
         indexProduct = productTable.getSelectionModel().getSelectedIndex();
 
-                Parent root = FXMLLoader.load(getClass().getResource("../view/modifyProduct.fxml"));
-                //set new stage
-                Stage stage = new Stage();
-                stage.setTitle("Modify Product");
-                stage.setScene(new Scene(root, 885, 561));
-                stage.show();
+        if (modProduct == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Select a Product to modify."));
+            alert.showAndWait();
+        } else {
+            Parent root = FXMLLoader.load(getClass().getResource("../view/modifyProduct.fxml"));
+            //set new stage
+            Stage stage = new Stage();
+            stage.setTitle("Modify Product");
+            stage.setScene(new Scene(root, 885, 561));
+            stage.show();
+        }
     }
-
 
     public void onDeleteProduct(ActionEvent actionEvent) {
         deletedProduct = (Product) productTable.getSelectionModel().getSelectedItem();

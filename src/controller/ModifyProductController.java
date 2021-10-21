@@ -46,6 +46,7 @@ public class ModifyProductController implements Initializable {
     public TableColumn modProdAssociatedName;
     public TableColumn modProdAssociatedStock;
     public TableColumn modProdAssociatedCost;
+    public TextField modProdSearchTF;
     private Product selectedProduct;
     private int indexProduct;
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
@@ -151,5 +152,21 @@ public class ModifyProductController implements Initializable {
         associatedParts.remove(selectedPart);
     }
 
-}
+    public void onSearch(ActionEvent actionEvent) {
+        ObservableList<Part> allParts = Inventory.getAllParts();
+        ObservableList<Part> searchList = FXCollections.observableArrayList();
+
+        String searchParts = modProdSearchTF.getText();
+
+        for (Part part : allParts) {
+            if (String.valueOf(part.getId()).contains(searchParts) || part.getName().contains(searchParts)) {
+                searchList.add(part);
+            }
+
+
+            partTopTable.setItems(searchList);
+        }
+    }
+    }
+
 
