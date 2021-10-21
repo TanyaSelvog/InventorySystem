@@ -83,7 +83,7 @@
         <TextField layoutX="613.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="29.0" prefWidth="174.0" promptText="Search by Part ID or Name" />
         <Button fx:id="modProdSaveBtn" layoutX="648.0" layoutY="494.0" mnemonicParsing="false" onAction="#onSaveModProd" text="Save" />
         <Button fx:id="modProdCancelBtn" layoutX="729.0" layoutY="494.0" mnemonicParsing="false" onAction="#onModCancelBtn" text="Cancel" />
-        <Button fx:id="modProdRemoveBtn" layoutX="459.0" layoutY="473.0" mnemonicParsing="false" text="Remove Associated Part" />
+        <Button fx:id="modProdRemoveBtn" layoutX="459.0" layoutY="473.0" mnemonicParsing="false" onAction="#onRemoveBtn" text="Remove Associated Part" />
         <Label layoutX="51.0" layoutY="155.0" text="ID" />
         <Label layoutX="51.0" layoutY="206.0" text="Name" />
         <Label layoutX="51.0" layoutY="251.0" text="Inventory" />

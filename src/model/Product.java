@@ -75,6 +75,9 @@ public class Product {
         this.max = max;
     }
 
+    public void addAssociatedPart(Part part){
+        associatedParts.add(part);
+    }
     public ObservableList<Part> getAllAssociatedParts() {
         return associatedParts;
     }

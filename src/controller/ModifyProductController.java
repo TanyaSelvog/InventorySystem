@@ -41,7 +41,7 @@ public class ModifyProductController implements Initializable {
     public TableColumn modProdPartNameCol;
     public TableColumn modProdStockCol;
     public TableColumn modProdCostCol;
-    public TableView modProdBtmTable;
+    public TableView <Part> modProdBtmTable;
     public TableColumn modProdAssociatedID;
     public TableColumn modProdAssociatedName;
     public TableColumn modProdAssociatedStock;
@@ -53,9 +53,40 @@ public class ModifyProductController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         selectedProduct = MainController.getModProduct();
+        associatedParts= selectedProduct.getAllAssociatedParts();
         indexProduct = MainController.getIndexProduct();
-
+        System.out.println(associatedParts.toString());
         System.out.println(selectedProduct.toString());
+/**
+ String nameTest = selectedProduct.getName();
+ modProdName.setText(nameTest);
+
+ Double priceTest = selectedProduct.getPrice();
+ modProdPrice.setText(String.valueOf(priceTest));
+
+ Integer stockTest = selectedProduct.getStock();
+ modProdStock.setText(String.valueOf(stockTest));
+
+ Integer minTest = selectedProduct.getMin();
+ modProdMin.setText(String.valueOf(minTest));
+
+ Integer maxTest = selectedProduct.getMax();
+ modProdMax.setText(String.valueOf(maxTest));
+ */
+        partTopTable.setItems(Inventory.getAllParts());
+
+        modProdPartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        modProdPartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        modProdStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        modProdCostCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        //  associatedParts= selectedProduct.getAllAssociatedParts();
+        modProdBtmTable.setItems(associatedParts);
+
+        modProdAssociatedID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        modProdAssociatedName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        modProdAssociatedStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        modProdAssociatedCost.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         String nameTest = selectedProduct.getName();
         modProdName.setText(nameTest);
@@ -71,22 +102,7 @@ public class ModifyProductController implements Initializable {
 
         Integer maxTest = selectedProduct.getMax();
         modProdMax.setText(String.valueOf(maxTest));
-
-        partTopTable.setItems(Inventory.getAllParts());
-
-        modProdPartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        modProdPartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        modProdStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        modProdCostCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-        modProdAssociatedID.setCellValueFactory(new PropertyValueFactory<>("id"));
-        modProdAssociatedName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        modProdAssociatedStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        modProdAssociatedCost.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-
     }
-
     public void onModCancelBtn(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("../view/mainForm.fxml"));
         Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
@@ -129,5 +145,11 @@ public class ModifyProductController implements Initializable {
         associatedParts.add(selectedPart);
         modProdBtmTable.setItems(associatedParts);
     }
+
+    public void onRemoveBtn(ActionEvent actionEvent) {
+        Part selectedPart = modProdBtmTable.getSelectionModel().getSelectedItem();
+        associatedParts.remove(selectedPart);
+    }
+
 }
 

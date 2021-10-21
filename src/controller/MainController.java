@@ -64,7 +64,7 @@ public class MainController implements Initializable {
     public Button addProductBtn;
     public Button modifyProductBtn;
     public Button productDeleteBtn;
-    public TextField prodSearch;
+    public TextField prodSearchTF;
     public Label productsLBL;
 
     public Button addBtn;
@@ -74,35 +74,6 @@ public class MainController implements Initializable {
     public TextField searchParts;
 
 
-
-
-
-    //Search function
-    private ObservableList<Product> searchProductName(String partialName){
-        ObservableList<Product> namedProducts = FXCollections.observableArrayList();
-
-        ObservableList<Product> allProducts = Inventory.getAllProducts();
-        for(Product product : allProducts){
-            if(product.getName().contains(partialName)){
-                namedProducts.add(product);
-            }
-        }
-        return namedProducts;
-    }
-
-
-   private ObservableList<Part> searchByName(String partialName){
-        ObservableList<Part> namedParts = FXCollections.observableArrayList();
-
-        ObservableList<Part> allParts = Inventory.getAllParts();
-        for(Part part : allParts){
-            if(part.getName().contains(partialName)){
-                namedParts.add(part);
-            }
-        }
-
-       return namedParts;
-    }
 
     public void onAddProduct(ActionEvent actionEvent) throws Exception {
                 Parent root = FXMLLoader.load(getClass().getResource("../view/addProductForm.fxml"));
@@ -130,26 +101,8 @@ public class MainController implements Initializable {
 
     public void onDeleteProduct(ActionEvent actionEvent) {
         deletedProduct = (Product) productTable.getSelectionModel().getSelectedItem();
-
-        if (deletedProduct != null) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setContentText("Do you want to delete the selected product?");
-            Optional<ButtonType> userAnswer = alert.showAndWait();
-            if (userAnswer.isPresent() && userAnswer.get() == ButtonType.OK) {
-                Inventory.deleteProduct(deletedProduct);
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, ("Select a product to delete."));
-            alert.showAndWait();
-        }
-
     }
 
-     public void onProdSearch(ActionEvent actionEvent) {
-        String q = prodSearch.getText();
-        ObservableList<Product> products = searchProductName(q);
-        productTable.setItems(products);
-    }
 
      public void onModify(ActionEvent actionEvent) throws IOException {
 
@@ -194,11 +147,6 @@ public class MainController implements Initializable {
 
 
 
-  public void onSearch(ActionEvent actionEvent) {
-        String q = searchParts.getText();
-        ObservableList<Part> parts = searchByName(q);
-        partTable.setItems(parts);
-            }
 
  public void onAdd(ActionEvent actionEvent) throws IOException{
      Parent root = FXMLLoader.load(getClass().getResource("/view/addProductForm.fxml"));
@@ -249,7 +197,39 @@ public void onAddPart(ActionEvent actionEvent) throws IOException {
 
     }
 
+    public void onProdSearch(ActionEvent actionEvent) {
 
+        ObservableList<Product> allProducts = Inventory.getAllProducts();
+        ObservableList<Product> searchList = FXCollections.observableArrayList();
 
+        String searchProds = prodSearchTF.getText();
 
+        for(Product product: allProducts){
+            if (String.valueOf(product.getId()).contains(searchProds) || product.getName().contains(searchProds)){
+
+                searchList.add(product);
             }
+
+
+        }
+
+        productTable.setItems(searchList);
+    }
+    public void onSearch(ActionEvent actionEvent) {
+
+         ObservableList<Part> namedParts = FXCollections.observableArrayList();
+         ObservableList<Part> allParts = Inventory.getAllParts();
+         String queryPart = searchParts.getText();
+
+
+        for(Part part : allParts){
+            if(part.getName().contains(queryPart) || String.valueOf(part.getId()).contains(queryPart)){
+                namedParts.add(part);
+            }
+        }
+
+        partTable.setItems(namedParts);
+    }
+}
+
+

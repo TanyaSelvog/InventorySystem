@@ -32,7 +32,7 @@ public class AddProductController implements Initializable {
     public TableColumn nameCol;
     public TableColumn invCol;
     public TableColumn costCol;
-    public TableView addProdBtmTable;
+    public TableView<Part> addProdBtmTable;
     public TableColumn idColAssociated;
     public TableColumn nameColAssociated;
     public TableColumn invColAssociated;
@@ -40,6 +40,7 @@ public class AddProductController implements Initializable {
     public Button addBtn;
     public TextField searchField;
     private static Part partToAdd;
+    public Button removeAssociatedPartBtn;
 
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
 
@@ -152,6 +153,9 @@ public class AddProductController implements Initializable {
                 Integer id = Inventory.addID();
 
                     Product newProduct = new Product(id, name, price, stock, min, max);
+                    for (Part p : associatedParts){
+                        newProduct.addAssociatedPart(p);
+                    }
                     Inventory.addProduct(newProduct);
                     System.out.println(newProduct.toString());
                     return newProduct;
@@ -199,5 +203,10 @@ public class AddProductController implements Initializable {
         String q = searchField.getText();
         ObservableList<Part> parts = searchByName(q);
         addProdTopTable.setItems(parts);
+    }
+
+    public void onRemovePart(ActionEvent actionEvent) {
+        Part selectedPart = addProdBtmTable.getSelectionModel().getSelectedItem();
+        associatedParts.remove(selectedPart);
     }
 }
