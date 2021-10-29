@@ -1,6 +1,5 @@
 package model;
 
-
 /**
  *
  * @author Tanya R. Selvog
@@ -9,13 +8,30 @@ package model;
 /**The Part class is an abstract class that hold general data about a part. InHouse
  * and Outsourced inherit from this class.
  */
-public abstract class
-Part {
+public abstract class Part {
+    /**
+     * Part id
+     */
     private int id;
+    /**
+     * Name
+     */
     private String name;
+    /**
+     * Price
+     */
     private double price;
+    /**
+     * Stock
+     */
     private int stock;
+    /**
+     * Min
+     */
     private int min;
+    /**
+     * Max
+     */
     private int max;
 
     /**
@@ -36,73 +52,70 @@ Part {
         this.max = max;
     }
 
-    /**
-     * *
+    /** Getter for id
      * @return the id
      */
     public int getId(){
         return id;
     }
 
-    /**
+    /** Setter for id
      * @param id the id to set
      */
     public void setId(int id){
         this.id = id;
     }
 
-    /**
-     *
+    /** Getter for name
      * @return the name
      */
     public String getName(){
         return name;
     }
 
-    /**
+    /** Setter for name
      * @param name the name to set
      */
     public void setName(String name){
         this.name = name;
     }
 
-    /**
+    /** Getter for price
      * @return the price
      */
     public double getPrice(){
         return price;
     }
 
-    /**
-     *
+    /** Setter for Price
      * @param price the price to set
      */
     public void setPrice(double price){
         this.price = price;
     }
 
-    /**
+    /** Getter for stock
      * @return the stock
      */
     public int getStock(){
         return stock;
     }
 
-    /**
+    /** Setter for stock
      * @param stock the stock to set
      */
     public void setStock(int stock){
         this.stock = stock;
     }
 
-    /**
+    /** Getter for min
      * @return the min
      */
     public int getMin(){
         return min;
     }
 
-    /**
+    /** Setter for min
      * @param min the min to set
      */
 
@@ -110,28 +123,18 @@ Part {
         this.min = min;
     }
 
-    /**
+    /** Getter for max
      * @return the max
      */
     public int getMax(){
         return max;
     }
 
-    /**
-     *
-     * @param max the max to set
+    /** Setter for max
+     * @param max max to set
      */
     public void setMax(int max){
         this.max = max;
     }
-
-    public String toString()
-    {
-        String tr = "Name: " + name + "\nmin: " + min + "\nstock: " + stock + "\nmax: " + max + "\nid: " + id + "\nprice: " + price;
-        return tr;
-    }
-
-
-
 
 }

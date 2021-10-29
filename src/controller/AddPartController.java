@@ -24,42 +24,111 @@ import java.io.IOException;
 
 import static model.Inventory.addID;
 
+/**
+ * This class is a controller class that provides logic for the add part screen.
+ */
 
 public class AddPartController implements Initializable {
 
+    /**
+     * Radio button for In House Parts
+     */
     public RadioButton inHouseRadio;
+    /**
+     * Toggle group for radio buttons
+     */
     public ToggleGroup tgroup;
+    /**
+     * Label for Company Name or Machine ID
+     */
     public Label changeMe;
+    /**
+     * Cost text field
+     */
     public TextField costPartText;
+    /**
+     * Max text field
+     */
     public TextField maxTextField;
+    /**
+     * Text field for Company Name or Machine ID
+     */
     public TextField partDiffLabel;
+    /**
+     * Min text field
+     */
     public TextField minTextField;
+    /**
+     * Save button
+     */
     public Button savePartBtn;
+    /**
+     * Cancel button
+     */
     public Button cancelPartAddBtn;
+    /**
+     * Text field for stock/inventory
+     */
     public TextField stockTextField;
+    /**
+     * Name text field
+     */
     public TextField nameTextField;
+    /**
+     * ID Text Field (auto generated)
+     */
     public TextField idTextField;
+    /**
+     * Radio button for Outsourced Part
+     */
     public RadioButton outsourcedBtn;
+    /**
+     * Label for Add Part window
+     */
     public Label addPartLBL;
 
+    /**
+     * This method initializes the controller.
+     * @param url Used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle Used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
+    /**
+     * This method changes text to Machine ID when In-House radio button is selected.
+     * @param actionEvent In-House radio button is selected
+     */
 
     public void onInHouseAdd(ActionEvent actionEvent) {
         changeMe.setText("Machine ID");
 
     }
 
+    /**
+     * This method changes text to Company Name when Outsourced is selected.
+     * @param actionEvent Outsourced radio button is selected
+     */
     public void onOutsourcedAdd(ActionEvent actionEvent) {
         changeMe.setText("Company Name");
     }
 
+    /**
+     * This method returns user to main window when they click on cancel.
+     * @param event On Cancel button click
+     * @throws IOException From FXMLLoader
+     */
     public void onCancelPart(ActionEvent event) throws IOException {
         returnMainScreen(event);
     }
 
+    /**
+     * This method returns users to main window
+     * @param actionEvent Event representing some type of action
+     * @throws IOException From FXMLLoader
+     */
     public void returnMainScreen(ActionEvent actionEvent) throws IOException {
         Parent parent = FXMLLoader.load(getClass().getResource("../view/mainForm.fxml"));
         Scene scene = new Scene(parent);
@@ -69,6 +138,14 @@ public class AddPartController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This method returns a part
+     * @return new part
+     *<p><b>
+     * FUTURE ENHANCEMENTS</b>
+     *I would make design changes like where the 'min' and 'max' are placed. I would
+     * also make the app more accessible and include tooltips and explanations for fields.</p>
+     */
 
         private Part getPart () {
             boolean isValid = true;
@@ -185,14 +262,27 @@ public class AddPartController implements Initializable {
             alert.showAndWait();
             return null;
 
-
-
         }
+
+    /**
+     * This method gets saves a new part and returns users to main window
+     *  @param actionEvent On Save button click
+     *   @throws IOException From FXMLLoader
+     * <p><b>
+     * RUNTIME/LOGICAL ERRORS</b>
+     *Initially I made this method so that it would run the getPart method and
+     * immediately close/return user to main window. I realized that if there were errors with the part and the
+     * user just saw the error messages, that they wouldn't be able to edit the data without the window closing and returning
+     * them to the main window. Since my getPart method returns null if there is an error, I added an if statement so
+     * that way the user is returned to the main window only in the cases that there is an actual valid part.</p>
+     *
+     */
 
         public void onSaveBtnAddPart(ActionEvent actionEvent) throws IOException {
             Part part = getPart();
-            returnMainScreen(actionEvent);
-
+            if (part != null){
+                returnMainScreen(actionEvent);
+            }
         }
 }
 

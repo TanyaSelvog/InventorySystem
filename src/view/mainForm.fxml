@@ -38,12 +38,13 @@
                   <Button fx:id="addProductBtn" layoutX="184.0" layoutY="241.0" mnemonicParsing="false" onAction="#onAddProduct" text="Add" />
                   <Button fx:id="modifyProductBtn" layoutX="240.0" layoutY="241.0" mnemonicParsing="false" onAction="#onModifyProduct" text="Modify" />
                   <Button fx:id="productDeleteBtn" layoutX="310.0" layoutY="241.0" mnemonicParsing="false" onAction="#onDeleteProduct" text="Delete" />
-                  <TextField fx:id="prodSearchTF" layoutX="200.0" layoutY="14.0" onAction="#onProdSearch" prefHeight="16.0" prefWidth="197.0" promptText="Search by Product ID or Name" />
+                  <TextField fx:id="prodSearchTF" layoutX="127.0" layoutY="14.0" onKeyPressed="#onProductsSearch"  onAction="#onProdSearch" prefHeight="16.0" prefWidth="197.0" promptText="Search by Product ID or Name" />
                   <Label fx:id="productsLBL" layoutX="14.0" layoutY="15.0" text="Products">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
+                  <Button fx:id="productsSearchBtn" layoutX="337.0" layoutY="14.0" mnemonicParsing="false" onAction="#onProdSearch"  text="Search" />
                </children></Pane>
                 <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-border-radius: 10 10 10 10;" GridPane.rowIndex="1">
                     <children>
@@ -63,7 +64,8 @@
                                 <Font size="18.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="searchParts" layoutX="190.0" layoutY="13.0" onAction="#onSearch" prefHeight="16.0" prefWidth="197.0" promptText="Search by Part ID or Name" />
+                        <TextField fx:id="searchParts" layoutX="122.0" layoutY="13.0" onKeyPressed="#onSearch" prefHeight="16.0" prefWidth="197.0" promptText="Search by Part ID or Name" />
+                  <Button fx:id="partsSearchBtn" layoutX="337.0" layoutY="13.0" mnemonicParsing="false" onAction="#onSearchPartsBtn" text="Search" />
                     </children>
                     <GridPane.margin>
                         <Insets left="4.0" right="2.0" />
