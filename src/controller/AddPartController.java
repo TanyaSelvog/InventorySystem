@@ -89,7 +89,8 @@ public class AddPartController implements Initializable {
 
     /**
      * This method initializes the controller.
-     * @param url Used to resolve relative paths for the root object, or null if the location is not known.
+     *
+     * @param url            Used to resolve relative paths for the root object, or null if the location is not known.
      * @param resourceBundle Used to localize the root object, or null if the root object was not localized.
      */
     @Override
@@ -99,6 +100,7 @@ public class AddPartController implements Initializable {
 
     /**
      * This method changes text to Machine ID when In-House radio button is selected.
+     *
      * @param actionEvent In-House radio button is selected
      */
 
@@ -109,6 +111,7 @@ public class AddPartController implements Initializable {
 
     /**
      * This method changes text to Company Name when Outsourced is selected.
+     *
      * @param actionEvent Outsourced radio button is selected
      */
     public void onOutsourcedAdd(ActionEvent actionEvent) {
@@ -117,6 +120,7 @@ public class AddPartController implements Initializable {
 
     /**
      * This method returns user to main window when they click on cancel.
+     *
      * @param event On Cancel button click
      * @throws IOException From FXMLLoader
      */
@@ -126,6 +130,7 @@ public class AddPartController implements Initializable {
 
     /**
      * This method returns users to main window
+     *
      * @param actionEvent Event representing some type of action
      * @throws IOException From FXMLLoader
      */
@@ -140,151 +145,122 @@ public class AddPartController implements Initializable {
 
     /**
      * This method returns a part
+     *
      * @return new part
-     *<p><b>
+     * <p><b>
      * FUTURE ENHANCEMENTS</b>
-     *I would make design changes like where the 'min' and 'max' are placed. I would
+     * I would make design changes like where the 'min' and 'max' are placed. I would
      * also make the app more accessible and include tooltips and explanations for fields.</p>
      */
 
-        private Part getPart () {
-            boolean isValid = true;
-            List<String> messages = new ArrayList<>();
-            Double price = null;
-            Integer stock = null;
-            Integer max = null;
-            Integer min = null;
-            Integer machineID = null;
-            String companyName = null;
-
-
-            String name = nameTextField.getText();
-            if (name.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Name field");
-            }
-
-            String priceText = costPartText.getText();
-            if (priceText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Price field");
-            } else try {
-                price = Double.parseDouble(priceText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("Price is not a double.");
-            }
-
-
-            String stockText = stockTextField.getText();
-            if (stockText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Stock field");
-            } else try {
-                stock = Integer.parseInt(stockText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("Stock is not an integer");
-            }
-
-            String minText = minTextField.getText();
-            if (minText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Min field");
-            } else try {
-                min = Integer.parseInt(minText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("Min is not an integer");
-            }
-
-            String maxText = maxTextField.getText();
-            if (maxText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Max field");
-            } else try {
-                max = Integer.parseInt(maxText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("Max is not an integer");
-            }
-
-            if (min != null && max != null && min >= max) {
-                isValid = false;
-                messages.add("Min value needs to be less than Max value");
-            }
-
-            if (tgroup.getSelectedToggle() == null) {
-                isValid = false;
-                messages.add("Select either In-House or Outsourced");
-            }
-
-            if (inHouseRadio.isSelected()) {
-                String machineText = partDiffLabel.getText();
-                if (machineText.isEmpty()) {
-                    isValid = false;
-                    messages.add("No data in MachineID field");
-                } else try {
-                    machineID = Integer.parseInt(machineText);
-                } catch (NumberFormatException e) {
-                    isValid = false;
-                    messages.add("MachineID is not an integer");
-                }
-
-
-            }
-
-            if (outsourcedBtn.isSelected()) {
-                String company = partDiffLabel.getText();
-                if (company.isEmpty()) {
-                    isValid = false;
-                    messages.add("No data in Company Name field");
-                }
-
-            }
-
-            if (isValid) {
-
-                Integer id = Inventory.addID();
-                if (inHouseRadio.isSelected()) {
-                    InHouse newPartInHouse = new InHouse(id, name, price, stock, min, max, machineID);
-                    Inventory.addPart(newPartInHouse);
-                    return newPartInHouse;
-
-                } else if (outsourcedBtn.isSelected()) {
-                    Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, companyName);
-                    Inventory.addPart(newOutsourced);
-                    return newOutsourced;
-                }
-
-            }
-            Alert alert = new Alert(Alert.AlertType.ERROR, String.join("\n", messages));
+    private Part getPart() {
+        if (tgroup.getSelectedToggle() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("In-House or Outsourced need to be checked."));
             alert.showAndWait();
-            return null;
+        }
+        try {
+            String name = nameTextField.getText();
+            Double price = Double.parseDouble(costPartText.getText());
+            int min = Integer.parseInt(minTextField.getText());
+            int max = Integer.parseInt(maxTextField.getText());
+            int stock = Integer.parseInt(stockTextField.getText());
+            int machineID;
+            String companyName;
 
+
+
+            if (name.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, ("Name is field missing data."));
+                alert.showAndWait();
+
+            } else {
+                if (inventoryValid(min, max, stock) && minMaxValid(min, max)) {
+
+                    Integer id = Inventory.addID();
+
+                    if (inHouseRadio.isSelected()) {
+                        machineID = Integer.parseInt(partDiffLabel.getText());
+                        InHouse newPartInHouse = new InHouse(id, name, price, stock, min, max, machineID);
+                        Inventory.addPart(newPartInHouse);
+                        return newPartInHouse;
+
+                    } else if (outsourcedBtn.isSelected()) {
+                        companyName = partDiffLabel.getText();
+                        Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, companyName);
+                        Inventory.addPart(newOutsourced);
+                        return newOutsourced;
+                    }
+                }
+                }
+            } catch(Exception displayE){
+                Alert alert = new Alert(Alert.AlertType.ERROR, ("Data is missing or contains invalid values."));
+                alert.showAndWait();
+
+            }
+
+            return null;
         }
 
+
+
     /**
-     * This method gets saves a new part and returns users to main window
-     *  @param actionEvent On Save button click
-     *   @throws IOException From FXMLLoader
-     * <p><b>
-     * RUNTIME/LOGICAL ERRORS</b>
-     *Initially I made this method so that it would run the getPart method and
-     * immediately close/return user to main window. I realized that if there were errors with the part and the
-     * user just saw the error messages, that they wouldn't be able to edit the data without the window closing and returning
-     * them to the main window. Since my getPart method returns null if there is an error, I added an if statement so
-     * that way the user is returned to the main window only in the cases that there is an actual valid part.</p>
-     *
+     * This method checks if inventory is less than max and more than min.
+     * @param min  Minimum level
+     * @param max  Maximum level
+     * @param stock Stock level
+     * @return True if valid
      */
 
-        public void onSaveBtnAddPart(ActionEvent actionEvent) throws IOException {
-            Part part = getPart();
-            if (part != null){
+    private boolean inventoryValid(int min, int max, int stock) {
+
+        boolean isInventoryValid = true;
+        if (stock < min || stock > max) {
+            isInventoryValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Stock needs to be less than max and more than min."));
+            alert.showAndWait();
+        }
+        System.out.println("Test");
+        return isInventoryValid;
+    }
+    /**
+     * This method checks if minimum is less than maximum.
+     * @param min  Minimum level
+     * @param max  Maximum level
+     * @return True if minimum is less than maximum
+     */
+    private boolean minMaxValid(int min, int max){
+        boolean isMinMaxValid = true;
+        if (min >= max){
+            isMinMaxValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Min needs to be less than max."));
+            alert.showAndWait();
+        }
+        return isMinMaxValid;
+        }
+    /**
+     * This method gets saves a new part and returns users to main window
+     *
+     * @param actionEvent On Save button click
+     * @throws IOException From FXMLLoader
+     *                     <p><b>
+     *                     RUNTIME/LOGICAL ERRORS</b>
+     *                     Initially I made this method so that it would run the getPart method and
+     *                     immediately close/return user to main window. I realized that if there were errors with the part and the
+     *                     user just saw the error messages, that they wouldn't be able to edit the data without the window closing and returning
+     *                     them to the main window. Since my getPart method returns null if there is an error, I added an if statement so
+     *                     that way the user is returned to the main window only in the cases that there is an actual valid part.</p>
+     */
+
+    public void onSaveBtnAddPart(ActionEvent actionEvent) throws IOException {
+        Part part = getPart();
+
+            if (part != null) {
                 returnMainScreen(actionEvent);
             }
         }
-}
+    }
+
+
 
 
 

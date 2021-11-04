@@ -58,7 +58,7 @@ public class Product {
 
     /**
      * Setter for product id
-     * @param id unique ID
+     * @param id Unique Product ID
      */
     public void setId(int id) {
         this.id = id;
@@ -66,7 +66,7 @@ public class Product {
 
     /**
      * Getter for id
-     * @return id unique ID
+     * @return id Unique Product ID
      */
     public int getId() {
         return id;

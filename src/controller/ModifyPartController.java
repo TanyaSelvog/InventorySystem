@@ -63,9 +63,9 @@ public class ModifyPartController implements Initializable {
      */
     public TextField minTextField;
     /**
-     * Text field for Machine ID
+     * Text field for Machine ID or Company Name
      */
-    public TextField machineIDText;
+    public TextField machineOrCompany;
     /**
      * Text field for maximum level
      */
@@ -82,6 +82,7 @@ public class ModifyPartController implements Initializable {
      * Text field for name
      */
     public TextField nameTextField;
+
     /**
      * selectedPart object
      */
@@ -93,6 +94,7 @@ public class ModifyPartController implements Initializable {
 
     /**
      * This method changes text to Machine ID when In-House radio button is selected.
+     *
      * @param actionEvent In-House radio button is selected
      */
     public void onInHouseModify(ActionEvent actionEvent) {
@@ -101,6 +103,7 @@ public class ModifyPartController implements Initializable {
 
     /**
      * This method changes text to Company Name when Outsourced radio button is selected.
+     *
      * @param actionEvent Outsourced radio button is selected
      */
     public void onOutsourcedModify(ActionEvent actionEvent) {
@@ -109,6 +112,7 @@ public class ModifyPartController implements Initializable {
 
     /**
      * This method returns user to main window when they click on cancel.
+     *
      * @param actionEvent On Cancel button click
      * @throws IOException From FXMLLoader
      */
@@ -122,6 +126,7 @@ public class ModifyPartController implements Initializable {
 
     /**
      * This method returns user to main window
+     *
      * @param actionEvent Event type
      * @throws IOException From FXMLLoader
      */
@@ -134,178 +139,148 @@ public class ModifyPartController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
     /**
-     * This method returns a part
-     * @return new part
+     * This method gets a part and returns it
+     *
+     * @return Modified part
      */
 
-    private Part getModPart () {
-        boolean isValid = true;
-        List<String> messages = new ArrayList<>();
-        Double price = null;
-        Integer stock = null;
-        Integer max = null;
-        Integer min = null;
-        Integer machineID = null;
-        String companyName = null;
-
-
-        String name = nameTextField.getText();
-        if (name.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Name field");
-        }
-
-        String priceText = costPartText.getText();
-        if (priceText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Price field");
-        } else try {
-            price = Double.parseDouble(priceText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Price is not a double.");
-        }
-
-
-        String stockText = inventoryTextField.getText();
-        if (stockText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Stock field");
-        } else try {
-            stock = Integer.parseInt(stockText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Stock is not an integer");
-        }
-
-        String minText = minTextField.getText();
-        if (minText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Min field");
-        } else try {
-            min = Integer.parseInt(minText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Min is not an integer");
-        }
-
-        String maxText = maxTextField.getText();
-        if (maxText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Max field");
-        } else try {
-            max = Integer.parseInt(maxText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Max is not an integer");
-        }
-
-        if (min != null && max != null && min >= max) {
-            isValid = false;
-            messages.add("Min value needs to be less than Max value");
-        }
-
+    private Part getModPart() {
         if (modifygroup.getSelectedToggle() == null) {
-            isValid = false;
-            messages.add("Select either In-House or Outsourced");
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("In-House or Outsourced need to be checked."));
+            alert.showAndWait();
         }
+        try {
+            String name = nameTextField.getText();
+            Double price = Double.parseDouble(costPartText.getText());
+            int min = Integer.parseInt(minTextField.getText());
+            int max = Integer.parseInt(maxTextField.getText());
+            int stock = Integer.parseInt(inventoryTextField.getText());
+            int machineID;
+            String companyName;
 
-        if (inHouseRadio.isSelected()) {
-            String machineText = machineIDText.getText();
-            if (machineText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in MachineID field");
-            } else try {
-                machineID = Integer.parseInt(machineText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("MachineID is not an integer");
+
+            if (inventoryValid(min, max, stock) && minMaxValid(min, max)) {
+                int id = selectedPart.getId();
+
+                if (inHouseRadio.isSelected()) {
+                    machineID = Integer.parseInt(machineOrCompany.getText());
+                    InHouse newPartInHouse = new InHouse(id, name, price, stock, min, max, machineID);
+                    Inventory.updatePart(index, newPartInHouse);
+                    return newPartInHouse;
+
+                } else if (outsourcedBtn.isSelected()) {
+                    companyName = machineOrCompany.getText();
+                    Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, companyName);
+                    Inventory.updatePart(index,newOutsourced);
+                    return newOutsourced;
+                }
+
             }
-
-
-        }
-
-        if (outsourcedBtn.isSelected()) {
-            String company = machineIDText.getText();
-            if (company.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Company Name field");
-            }
+        } catch (Exception displayE) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Data is missing or contains invalid values."));
+            alert.showAndWait();
 
         }
 
-        if (isValid) {
-
-            Integer id = Inventory.addID();
-            if (inHouseRadio.isSelected()) {
-                machineID = Integer.parseInt(machineIDText.getText());
-                InHouse newPartInHouse = new InHouse(id, name, price, stock, min, max, machineID);
-                Inventory.updatePart(index, newPartInHouse);
-                return newPartInHouse;
-            } else if (outsourcedBtn.isSelected()) {
-                companyName = machineIDText.getText();
-                Outsourced newOutsourced = new Outsourced(id, name, price, stock, min, max, companyName);
-                Inventory.updatePart(index, newOutsourced);
-                return newOutsourced;
-            }
-
-        }
-        Alert alert = new Alert(Alert.AlertType.ERROR, String.join("\n", messages));
-        alert.showAndWait();
         return null;
     }
+
+
     /**
-     * This method saves modified part.
-     * @param actionEvent On Save button click
-     * @throws IOException From
-     * FXMLLoader
+     * This method checks if inventory is less than max and more than min.
+     * @param min  Minimum level
+     * @param max  Maximum level
+     * @param stock Stock level
+     * @return True if valid
      */
 
-    public void onSaveModify(ActionEvent actionEvent) throws IOException {
-        Part part = getModPart();
-        if (part != null){
-            returnMainScreen(actionEvent);
+        private boolean inventoryValid(int min, int max, int stock) {
+
+            boolean isInventoryValid = true;
+            if (stock < min || stock > max) {
+                isInventoryValid = false;
+                Alert alert = new Alert(Alert.AlertType.ERROR, ("Stock needs to be less than max and more than min."));
+                alert.showAndWait();
+            }
+            return isInventoryValid;
         }
-    }
     /**
-    * This method initializes the Modify Part Controller.
-    * @param url Used to resolve relative paths for the root object, or null if the location is not known.
-    * @param resourceBundle Used to localize the root object, or null if the root object was not localized.
-    */
-@Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        selectedPart = MainController.getModPart();
-        index = MainController.getIndexPart();
-
-        String nameTest = selectedPart.getName();
-        nameTextField.setText(nameTest);
-
-        Double priceTest = selectedPart.getPrice();
-        costPartText.setText(String.valueOf(priceTest));
-
-        Integer stockTest = selectedPart.getStock();
-        inventoryTextField.setText(String.valueOf(stockTest));
-
-        Integer minTest = selectedPart.getMin();
-        minTextField.setText(String.valueOf(minTest));
-
-        Integer maxTest = selectedPart.getMax();
-        maxTextField.setText(String.valueOf(maxTest));
-
-        if (selectedPart instanceof InHouse) {
-            inHouseRadio.setSelected(true);
-            machineIDText.setText(String.valueOf(((InHouse) selectedPart).getMachineId()));
-            modifyChange.setText("Machine ID");
-        } else {
-            outsourcedBtn.setSelected(true);
-            machineIDText.setText(String.valueOf(((Outsourced) selectedPart).getCompanyName()));
-            modifyChange.setText("Company Name");
+     * This method checks if minimum is less than maximum.
+     * @param min  Minimum level
+     * @param max  Maximum level
+     * @return True if minimum is less than maximum
+     */
+        private boolean minMaxValid(int min, int max){
+            boolean isMinMaxValid = true;
+            if (min >= max){
+                isMinMaxValid = false;
+                Alert alert = new Alert(Alert.AlertType.ERROR, ("Min needs to be less than max."));
+                alert.showAndWait();
+            }
+            return isMinMaxValid;
         }
 
+        /**
+         * This method saves modified part.
+         * @param actionEvent On Save button click
+         * @throws IOException From
+         * FXMLLoader
+         */
+
+        public void onSaveModify (ActionEvent actionEvent) throws IOException {
+            Part part = getModPart();
+            if (part != null) {
+                returnMainScreen(actionEvent);
+            }
+        }
+        /**
+         * This method initializes the Modify Part Controller.
+         * @param url Used to resolve relative paths for the root object, or null if the location is not known.
+         * @param resourceBundle Used to localize the root object, or null if the root object was not localized.
+         */
+        @Override
+        public void initialize (URL url, ResourceBundle resourceBundle){
+
+            selectedPart = MainController.getModPart();
+            index = MainController.getIndexPart();
 
 
+            if (selectedPart instanceof Outsourced) {
+                outsourcedBtn.setSelected(true);
+                machineOrCompany.setText(((Outsourced) selectedPart).getCompanyName());
+                modifyChange.setText("Company Name");
+            }
+
+            String nameTest = selectedPart.getName();
+            nameTextField.setText(nameTest);
+
+            Double priceTest = selectedPart.getPrice();
+            costPartText.setText(String.valueOf(priceTest));
+
+            Integer stockTest = selectedPart.getStock();
+            inventoryTextField.setText(String.valueOf(stockTest));
+
+            Integer minTest = selectedPart.getMin();
+            minTextField.setText(String.valueOf(minTest));
+
+            Integer maxTest = selectedPart.getMax();
+            maxTextField.setText(String.valueOf(maxTest));
+
+
+            if (selectedPart instanceof Outsourced) {
+                outsourcedBtn.setSelected(true);
+                machineOrCompany.setText(((Outsourced) selectedPart).getCompanyName());
+                modifyChange.setText("Company Name");
+            }
+            if (selectedPart instanceof InHouse) {
+                inHouseRadio.setSelected(true);
+                machineOrCompany.setText(String.valueOf(((InHouse) selectedPart).getMachineId()));
+                modifyChange.setText("Machine ID");
+            }
+
+
+        }
     }
-}
 

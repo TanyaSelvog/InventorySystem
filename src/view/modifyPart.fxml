@@ -59,7 +59,7 @@
                                 <Insets top="5.0" />
                             </VBox.margin>
                         </TextField>
-                        <TextField fx:id="machineIDText" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
+                        <TextField fx:id="machineOrCompany" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity">
                             <VBox.margin>
                                 <Insets top="4.0" />
                             </VBox.margin>

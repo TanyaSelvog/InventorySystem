@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -110,15 +111,16 @@ public class AddProductController implements Initializable {
 
     /**
      * This method searches by name all parts.
+     *
      * @param partialName Partial name of part to be searched
      * @return list of named parts
      */
-    private ObservableList<Part> searchByName(String partialName){
+    private ObservableList<Part> searchByName(String partialName) {
         ObservableList<Part> namedParts = FXCollections.observableArrayList();
 
         ObservableList<Part> allParts = Inventory.getAllParts();
-        for(Part part : allParts){
-            if(part.getName().contains(partialName)){
+        for (Part part : allParts) {
+            if (part.getName().contains(partialName)) {
                 namedParts.add(part);
             }
         }
@@ -129,7 +131,8 @@ public class AddProductController implements Initializable {
     /**
      * This method initializes the controller.
      * It also populates the data in the tables from the MainController.
-     * @param url Used to resolve relative paths for the root object, or null if the location is not known.
+     *
+     * @param url            Used to resolve relative paths for the root object, or null if the location is not known.
      * @param resourceBundle Used to localize the root object, or null if the root object was not localized.
      */
     @Override
@@ -143,7 +146,6 @@ public class AddProductController implements Initializable {
         costCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
 
-
         idColAssociated.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColAssociated.setCellValueFactory(new PropertyValueFactory<>("name"));
         invColAssociated.setCellValueFactory(new PropertyValueFactory<>("stock"));
@@ -154,107 +156,98 @@ public class AddProductController implements Initializable {
     /**
      * This method adds a product in inventory. If text fields  have
      * invalid data, error messages are produced.
+     *
      * @return A new product
      */
-   private Product getProduct(){
-        boolean isValid = true;
-        List<String> messages = new ArrayList<>();
-        Double price = null;
-        Integer stock = null;
-        Integer max = null;
-        Integer min = null;
 
 
-        String name = addProductNameTF.getText();
-            if (name.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Name field");
-            }
+    private Product getProduct() {
 
-            String priceText = addPriceProdTF.getText();
-            if (priceText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Price field");
-            } else try {
-                price = Double.parseDouble(priceText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("Price is not a double.");
-            }
+        try {
+            String name = addProductNameTF.getText();
+            Double price = Double.parseDouble(addPriceProdTF.getText());
+            int min = Integer.parseInt(addMinProdTF.getText());
+            int max = Integer.parseInt(addMaxProd.getText());
+            int stock = Integer.parseInt(addStockProdTF.getText());
 
 
-            String stockText = addStockProdTF.getText();
-            if (stockText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Stock field");
-            } else try {
-                stock = Integer.parseInt(stockText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("Stock is not an integer");
-            }
-
-            String minText = addMinProdTF.getText();
-            if (minText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Min field");
-            } else try {
-                min = Integer.parseInt(minText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("Min is not an integer");
-            }
-
-            String maxText = addMaxProd.getText();
-            if (maxText.isEmpty()) {
-                isValid = false;
-                messages.add("No data in Max field");
-            } else try {
-                max = Integer.parseInt(maxText);
-            } catch (NumberFormatException e) {
-                isValid = false;
-                messages.add("Max is not an integer");
-            }
-
-            if (min != null && max != null && min >= max) {
-                isValid = false;
-                messages.add("Min value needs to be less than Max value");
-            }
-
-            if (isValid) {
-
-                Integer id = Inventory.addID();
-
-                    Product newProduct = new Product(id, name, price, stock, min, max);
-                    for (Part p : associatedParts){
-                        newProduct.addAssociatedPart(p);
-                    }
-                    Inventory.addProduct(newProduct);
-                    System.out.println(newProduct.toString());
-                    return newProduct;
+            if (inventoryValid(min, max, stock) && minMaxValid(min, max)) {
+                Integer id = Inventory.addProductID();
+                Product newProduct = new Product(id, name, price, stock, min, max);
+                for (Part p : associatedParts) {
+                    newProduct.addAssociatedPart(p);
+                }
+                Inventory.addProduct(newProduct);
+                return newProduct;
 
             }
 
-            Alert alert = new Alert(Alert.AlertType.ERROR, String.join("\n", messages));
+
+        } catch (Exception displayE) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Data is missing or contains invalid values."));
             alert.showAndWait();
-            return null;
+
+        }
+
+        return null;
+    }
+
+
+    /**
+     * This method checks if inventory is less than max and more than min.
+     *
+     * @param min   Minimum level
+     * @param max   Maximum level
+     * @param stock Stock level
+     * @return True if valid
+     */
+    private boolean inventoryValid(int min, int max, int stock) {
+
+        boolean isInventoryValid = true;
+        if (stock < min || stock > max) {
+            isInventoryValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Stock needs to be less than max and more than min."));
+            alert.showAndWait();
+        }
+        System.out.println("Test");
+        return isInventoryValid;
+    }
+
+    /**
+     * This method checks if minimum is less than max.
+     *
+     * @param min Minimum level of product
+     * @param max Maximum product level
+     * @return True if minimum is less than max
+     */
+    private boolean minMaxValid(int min, int max) {
+        boolean isMinMaxValid = true;
+        if (min >= max) {
+            isMinMaxValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Min needs to be less than max."));
+            alert.showAndWait();
+        }
+        return isMinMaxValid;
     }
 
     /**
      * This method returns users to main window when they click on cancel button.
+     *
      * @param actionEvent Cancel button click
      * @throws IOException From FXMLLoader
      */
     public void onCancelBtn(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("../view/mainForm.fxml"));
-        Stage stage = (Stage) ((Button)actionEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Button) actionEvent.getSource()).getScene().getWindow();
         stage.setTitle("Inventory Management System");
         stage.setScene(new Scene(root, 900, 500));
         stage.show();
     }
 
+
     /**
      * This method returns users to main window.
+     *
      * @param actionEvent Some type of action
      * @throws IOException From FXMLLoader
      */
@@ -269,18 +262,21 @@ public class AddProductController implements Initializable {
 
     /**
      * This method adds saves new product and returns users to main window.
+     *
      * @param actionEvent On Save button click
      * @throws IOException From FXMLLoader
      */
 
     public void onSaveProdAdd(ActionEvent actionEvent) throws IOException {
         Product product = getProduct();
-        if (product != null){
-        returnMainScreen(actionEvent);
+        if (product != null) {
+            returnMainScreen(actionEvent);
         }
     }
+
     /**
      * This method adds selected part from parts table to associated parts table.
+     *
      * @param actionEvent On Add button click
      */
     public void onAddFromTopTableToBtm(ActionEvent actionEvent) {
@@ -293,8 +289,10 @@ public class AddProductController implements Initializable {
             addProdBtmTable.setItems(associatedParts);
         }
     }
+
     /**
      * This method searches all parts based on ID or name.
+     *
      * @param actionEvent On Search button click
      */
     public void onSearch(ActionEvent actionEvent) {
@@ -312,8 +310,10 @@ public class AddProductController implements Initializable {
             addProdTopTable.setItems(searchList);
         }
     }
+
     /**
      * This method removes a part from associated parts table.
+     *
      * @param actionEvent On Remove button click
      */
     public void onRemovePart(ActionEvent actionEvent) {
@@ -322,7 +322,11 @@ public class AddProductController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR, ("No part has been selected."));
             alert.showAndWait();
         } else {
-            associatedParts.remove(selectedPart);
+            Alert alertTwo = new Alert(Alert.AlertType.CONFIRMATION, ("Are you sure you want to remove the Part?"));
+            Optional<ButtonType> userAnswer = alertTwo.showAndWait();
+            if (userAnswer.isPresent() && userAnswer.get() == ButtonType.OK) {
+                associatedParts.remove(selectedPart);
+            }
         }
     }
 }

@@ -18,9 +18,13 @@ public class Inventory {
     private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
     /**
-     * Unique ID for parts and products
+     * Unique ID for parts
      */
     private static int id = 0;
+    /*
+    * Unique ID for products
+     */
+    private static int productID = 0;
 
     /**
      * Creates a unique ID
@@ -30,7 +34,10 @@ public class Inventory {
         id = id + 1;
         return id;
     }
-
+    public static int addProductID() {
+        productID = productID + 1;
+        return productID;
+    }
     /**
      * This method adds a part to the inventory.
      * @param newPart new part added to inventory

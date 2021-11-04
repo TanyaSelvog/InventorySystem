@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -179,84 +180,76 @@ public class ModifyProductController implements Initializable {
 
     }
 
-    private Product getProduct() {
-        boolean isValid = true;
-        List<String> messages = new ArrayList<>();
-        Double price = null;
-        Integer stock = null;
-        Integer max = null;
-        Integer min = null;
+    /**
+     * This method gets a modified product
+     * @return Modified product
+     */
+
+    private Product getProduct(){
+        try {
+            String name = modProdName.getText();
+            Double price = Double.parseDouble(modProdPrice.getText());
+            int min = Integer.parseInt(modProdMin.getText());
+            int max = Integer.parseInt(modProdMax.getText());
+            int stock = Integer.parseInt(modProdStock.getText());
 
 
-        String name = modProdName.getText();
-        if (name.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Name field");
-        }
+            if (inventoryValid(min, max, stock) && minMaxValid(min, max)) {
+                int id = selectedProduct.getId();
+                Product newProduct = new Product(id, name, price, stock, min, max);
+                for (Part p : associatedParts){
+                    newProduct.addAssociatedPart(p);
+                }
+                Inventory.updateProduct(indexProduct, newProduct);
+                return newProduct;
 
-        String priceText = modProdPrice.getText();
-        if (priceText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Price field");
-        } else try {
-            price = Double.parseDouble(priceText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Price is not a double.");
-        }
+            }
 
-
-        String stockText = modProdStock.getText();
-        if (stockText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Stock field");
-        } else try {
-            stock = Integer.parseInt(stockText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Stock is not an integer");
-        }
-
-        String minText = modProdMin.getText();
-        if (minText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Min field");
-        } else try {
-            min = Integer.parseInt(minText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Min is not an integer");
-        }
-
-        String maxText = modProdMax.getText();
-        if (maxText.isEmpty()) {
-            isValid = false;
-            messages.add("No data in Max field");
-        } else try {
-            max = Integer.parseInt(maxText);
-        } catch (NumberFormatException e) {
-            isValid = false;
-            messages.add("Max is not an integer");
-        }
-
-        if (min != null && max != null && min >= max) {
-            isValid = false;
-            messages.add("Min value needs to be less than Max value");
-        }
-
-
-        if (isValid) {
-
-            int id = selectedProduct.getId();
-            Product newProduct = new Product(id, name, price, stock, min, max);
-            Inventory.updateProduct(indexProduct, newProduct);
-            return newProduct;
+        } catch (Exception displayE) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Data is missing or contains invalid values."));
+            alert.showAndWait();
 
         }
 
-        Alert alert = new Alert(Alert.AlertType.ERROR, String.join("\n", messages));
-        alert.showAndWait();
         return null;
+    }
+
+
+
+
+    /**
+     * This method checks if inventory is less than max and more than min.
+     * @param min  minimum level
+     * @param max  maximum level
+     * @param stock Stock level
+     * @return True if valid
+     */
+
+    private boolean inventoryValid(int min, int max, int stock) {
+
+        boolean isInventoryValid = true;
+        if (stock < min || stock > max) {
+            isInventoryValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Stock needs to be less than max and more than min."));
+            alert.showAndWait();
+        }
+        System.out.println("Test");
+        return isInventoryValid;
+    }
+    /**
+     * This method checks if minimum is less than max.
+     * @param min Minimum level of product
+     * @param max Maximum product level
+     * @return True if minimum is less than max
+     */
+    private boolean minMaxValid(int min, int max){
+        boolean isMinMaxValid = true;
+        if (min >= max){
+            isMinMaxValid = false;
+            Alert alert = new Alert(Alert.AlertType.ERROR, ("Min needs to be less than max."));
+            alert.showAndWait();
+        }
+        return isMinMaxValid;
     }
 
     /**
@@ -297,7 +290,11 @@ public class ModifyProductController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR, ("No part has been selected."));
             alert.showAndWait();
         } else {
-            associatedParts.remove(selectedPart);
+            Alert alertTwo = new Alert(Alert.AlertType.CONFIRMATION, ("Are you sure you want to remove the Part?"));
+            Optional<ButtonType> userAnswer = alertTwo.showAndWait();
+            if (userAnswer.isPresent() && userAnswer.get() == ButtonType.OK) {
+                associatedParts.remove(selectedPart);
+            }
         }
     }
     /**

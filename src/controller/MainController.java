@@ -234,25 +234,22 @@ public class MainController implements Initializable {
      */
     public void onDeleteProduct(ActionEvent actionEvent) {
         deletedProduct = (Product) productTable.getSelectionModel().getSelectedItem();
-        //   ObservableList<Part> associatedParts = deletedProduct.getAllAssociatedParts();
-
         if (deletedProduct == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ("Select a Product to delete."));
             alert.showAndWait();
         } else {
-            Alert alertTwo = new Alert(Alert.AlertType.CONFIRMATION, ("Do you want to delete the Product?"));
+            Alert alertTwo = new Alert(Alert.AlertType.CONFIRMATION, ("Are you sure you want to delete the Product?"));
             Optional<ButtonType> userAnswer = alertTwo.showAndWait();
-            if (userAnswer.isPresent() && userAnswer.get() == ButtonType.OK) {
-                ObservableList<Part> associatedParts = deletedProduct.getAllAssociatedParts();
+            ObservableList<Part> associatedParts = deletedProduct.getAllAssociatedParts();
                 if (associatedParts.size() >= 1) {
-                    Alert alert = new Alert(Alert.AlertType.ERROR, ("This Product has Part(s) associated. It can not be deleted."));
-                    alert.showAndWait();
-                } else {
-                    Inventory.deleteProduct(deletedProduct);
+                    Alert alertThree = new Alert(Alert.AlertType.ERROR, ("This Product has Part(s) associated. It can not be deleted."));
+                    alertThree.showAndWait();
+                } else if  (userAnswer.isPresent() && userAnswer.get() == ButtonType.OK) {
+               Inventory.deleteProduct(deletedProduct);
                     }
                 }
             }
-        }
+
 
     /**
      * This method displays Modify Part window if user selects a part to modify.
